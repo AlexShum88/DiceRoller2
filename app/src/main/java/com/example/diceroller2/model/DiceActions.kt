@@ -13,6 +13,15 @@ object DiceActions {
 
     }
 
+    fun rollAllPreviousDices(dice: Dice, repository: ConcreteRepository){
+        val dices = repository.getDices()
+        val index = dices.indexOfFirst { it === dice }
+        if (index<0) return
+        (0..index).forEach {
+            rollDice(dices[it], repository)
+        }
+    }
+
     fun changeDiceColor(dice: Dice, color: Int, repository: ConcreteRepository) {
         val diceR = findDice(dice, repository)
         diceR.color = color

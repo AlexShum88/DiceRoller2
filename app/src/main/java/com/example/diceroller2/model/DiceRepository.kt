@@ -1,7 +1,13 @@
 package com.example.diceroller2.model
 
+import com.example.diceroller2.R
+
 
 class DiceRepository: ConcreteRepository{
+
+    //!!!!! huinia
+
+    //!!!!!
 
     private val dices = mutableListOf<Dice>()
 

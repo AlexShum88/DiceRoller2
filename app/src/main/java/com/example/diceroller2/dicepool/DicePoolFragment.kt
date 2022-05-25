@@ -6,13 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.core.view.isVisible
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.diceroller2.App
 import com.example.diceroller2.model.Dice
 
-class DicePoolFragment : Fragment() {
+class DicePoolFragment(
+
+) : Fragment() {
 
     lateinit var binding: FragmentDicePoolBinding
 
@@ -36,24 +40,47 @@ class DicePoolFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val adapter = DiceAdapter(this, object : AdapterActions {
-            override fun OnClickRoll(dice: Dice) {
-                viewModel.rollDice(dice)
-            }
-        },
-        object: PopUpAction{
-            override fun changeColor(dice: Dice) {
-                viewModel.changeColor(dice)
-            }
+        var colorSwitcher = false
 
-            override fun changeImage(dice: Dice) {
-                viewModel.changeImage(dice)
+        viewModel.colorSwitcher.observe(viewLifecycleOwner) {
+            colorSwitcher = it.switch
+        }
+
+        val adapter = DiceAdapter(this,
+            object : AdapterActions {
+                override fun onClickRoll(dice: Dice) {
+
+                    if (colorSwitcher) {
+                        viewModel.changeColor(dice)
+                    } else {
+                        viewModel.rollPreviousDices(dice)
+                    }
+                }
+
+            },
+            object : PopUpAction {
+                override fun changeColor(dice: Dice) {
+//                viewModel.changeColor(dice)
+                }
+
+                override fun changeImage(dice: Dice) {
+                    viewModel.changeImage(dice)
+                }
             }
-        })
+        )
 
         binding = FragmentDicePoolBinding.inflate(inflater, container, false)
 
-        binding.button.setOnClickListener { viewModel.addDice(6, color, image) }
+        with(binding) {
+            addButton.setOnClickListener { viewModel.addDice(6, color, image) }
+            colorButton.setOnClickListener { viewModel.startChangeColorRegime() }
+            doneButton.setOnClickListener { viewModel.endChangeColorRegime() }
+        }
+
+        viewModel.colorSwitcher.observe(viewLifecycleOwner) {
+            binding.paletteFragment.isVisible = it.switch
+            binding.selectColor.setBackgroundResource(it.color)
+        }
 
         viewModel.dicesLD.observe(viewLifecycleOwner) {
             adapter.dices = it
@@ -66,6 +93,7 @@ class DicePoolFragment : Fragment() {
         setLayoutManager()
         return binding.root
     }
+
 
     fun setLayoutManager() {
 
