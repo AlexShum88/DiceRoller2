@@ -10,8 +10,10 @@ import androidx.core.view.isVisible
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.diceroller2.App
+import com.example.diceroller2.factory
 import com.example.diceroller2.model.Dice
 
 class DicePoolFragment(
@@ -81,6 +83,8 @@ class DicePoolFragment(
             binding.paletteFragment.isVisible = it.switch
             binding.selectColor.setBackgroundResource(it.color)
         }
+
+        binding.selectColor.setOnClickListener { findNavController().navigate(R.id.action_dicePoolFragment_to_chooseColorFragment) }
 
         viewModel.dicesLD.observe(viewLifecycleOwner) {
             adapter.dices = it

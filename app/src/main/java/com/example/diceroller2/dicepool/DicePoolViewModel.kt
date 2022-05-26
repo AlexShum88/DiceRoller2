@@ -2,13 +2,12 @@ package com.example.diceroller2.dicepool
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.diceroller2.R
 import com.example.diceroller2.model.*
 
 class DicePoolViewModel(
-    private val repository: ConcreteRepository,
+    private val repository: DiceMainRepository,
     private val switchColor: SwitchColor
 ) : ViewModel() {
 

@@ -6,7 +6,7 @@ typealias SwitchColorListener = (switchColor: SwitchColor) -> Unit
 
 
 class SwitchColor{
-    private var _color: Int = R.color.black
+    private var _color: Int = R.color.purple_500
     var color: Int
         get() = _color
         set(value) {

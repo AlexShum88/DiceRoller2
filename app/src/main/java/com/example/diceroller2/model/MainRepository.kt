@@ -4,6 +4,8 @@ import android.location.GnssAntennaInfo
 
 typealias DiceListListener = (dices: List<Dice>) -> Unit
 
+
+
 interface MainRepository {
 
     fun addListener(listener: DiceListListener)
