@@ -23,6 +23,12 @@ object DiceActions {
         noActiveDicesToDefault(index, dices)
     }
 
+    fun changeGrain(dice: Dice, newGrain: Int, repository: DiceMainRepository){
+        val diceC = findDice(dice, repository)
+        diceC.grain = newGrain
+        notifyRepositoryListeners(repository)
+    }
+
     fun noActiveDicesToDefault(index: Int, dices: List<Dice>){
 
         (index+1..dices.lastIndex).forEach{
@@ -46,6 +52,11 @@ object DiceActions {
 
     private fun findDice(dice: Dice, repository: DiceMainRepository): Dice {
         return repository.getDices().firstOrNull { it === dice }
+            ?: throw IllegalArgumentException("no such dice")
+    }
+
+    private fun findDice(dice: Dice, list: List<Dice>): Dice {
+        return list.firstOrNull { it === dice }
             ?: throw IllegalArgumentException("no such dice")
     }
 

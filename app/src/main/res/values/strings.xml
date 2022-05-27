@@ -3,4 +3,9 @@
     <string name="done">Done</string>
     <string name="add_button">Add Button</string>
     <string name="color_button">Color Button</string>
+    <string name="change_grain">Change dice grain</string>
+    <string name="change_all_grain">Change all dices grain</string>
+    <string name="change_all_grains">Change all dices grains</string>
+    <string name="remove_dice">Remove dice</string>
+    <string name="grain_menu_text">D%1$s</string>
 </resources>

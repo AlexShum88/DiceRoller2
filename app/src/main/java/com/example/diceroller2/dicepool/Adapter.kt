@@ -12,7 +12,7 @@ typealias SwitchListener = (switch: Boolean)-> Unit
 class DiceAdapter(
     private val fragment: DicePoolFragment,
     private val adapterActions: AdapterActions,
-    private val popUpAction: PopUpAction,
+    private val dicePopUpAction: DicePopUpAction,
 ): RecyclerView.Adapter<DiceAdapter.ViewHolder>(), View.OnClickListener, View.OnLongClickListener {
 
     class ViewHolder(val binding: DiceBinding): RecyclerView.ViewHolder(binding.root)
@@ -59,7 +59,7 @@ class DiceAdapter(
     override fun onLongClick(diceView: View): Boolean {
 
 //        Toast.makeText(fragment.requireContext(), "LongClick", Toast.LENGTH_SHORT).show()
-        PopUp(diceView, popUpAction).createPop()
+        PopUp(diceView, dicePopUpAction).createDicePop()
         return true
     }
 

@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentChooseColorBinding
 import com.example.diceroller2.factory
+
 import com.example.diceroller2.model.DColor
 
 class ChooseColorFragment : Fragment(R.layout.fragment_choose_color) {

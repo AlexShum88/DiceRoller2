@@ -66,7 +66,7 @@ class DicePoolViewModel(
     fun changeColor(dice: Dice) {
         // mock realisation
         DiceActions.changeDiceColor(dice, colorSwitcher.value?.color ?: R.color.white, repository)
-        //todo call changeColorFragment
+
 
     }
 
@@ -76,6 +76,20 @@ class DicePoolViewModel(
 
     fun endChangeColorRegime(){
         switchColor.switch = false
+    }
+
+    fun changeGrain(dice: Dice, newGrain: Int){
+        DiceActions.changeGrain(dice, newGrain, repository)
+    }
+
+    fun changeAllGrainForAll(newGrain: Int){
+        _dicesLD.value!!.forEach {
+            DiceActions.changeGrain(it, newGrain, repository)
+        }
+    }
+
+    fun removeDice(dice: Dice){
+        repository.removeDice(dice)
     }
 
     fun changeImage(dice: Dice) {

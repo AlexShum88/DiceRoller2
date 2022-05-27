@@ -1,18 +1,17 @@
 package com.example.diceroller2.dicepool
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.core.view.isVisible
-import com.example.diceroller2.R
-import com.example.diceroller2.databinding.FragmentDicePoolBinding
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.diceroller2.App
+import com.example.diceroller2.R
+import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import com.example.diceroller2.factory
 import com.example.diceroller2.model.Dice
 
@@ -60,21 +59,30 @@ class DicePoolFragment(
                 }
 
             },
-            object : PopUpAction {
-                override fun changeColor(dice: Dice) {
-//                viewModel.changeColor(dice)
+            object : DicePopUpAction {
+                override fun removeDice(dice: Dice) {
+                    viewModel.removeDice(dice)
                 }
 
-                override fun changeImage(dice: Dice) {
-                    viewModel.changeImage(dice)
+                override fun changeGrain(dice: Dice, grain: Int) {
+                    viewModel.changeGrain(dice, grain)
                 }
+
+                override fun changeAllGrain(grain: Int) {
+                    viewModel.changeAllGrainForAll(grain)
+                }
+
+
             }
         )
 
         binding = FragmentDicePoolBinding.inflate(inflater, container, false)
 
         with(binding) {
-            addButton.setOnClickListener { viewModel.addDice(6, color, image) }
+
+            addButton.setOnClickListener {
+                createGrainPopUpForAddDice(it, color, image, viewModel::addDice)
+            }
             colorButton.setOnClickListener { viewModel.startChangeColorRegime() }
             doneButton.setOnClickListener { viewModel.endChangeColorRegime() }
         }
@@ -112,6 +120,10 @@ class DicePoolFragment(
                 binding.diceRecycler.layoutManager = GridLayoutManager(requireContext(), columns)
             }
         })
+    }
+    fun createDice(grain: Int){
+
+        viewModel.addDice(grain, color, image)
     }
 
     override fun onDestroy() {
