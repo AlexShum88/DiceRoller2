@@ -7,16 +7,8 @@ import android.widget.PopupMenu
 import com.example.diceroller2.R
 import com.example.diceroller2.model.Dice
 import com.example.diceroller2.model.DiceRepository.Companion.GRAINS
-import java.lang.IllegalArgumentException
 
-typealias PopUpGrainChange = (Dice, Int) -> Unit
 
-interface DicePopUpAction {
-    fun removeDice(dice: Dice)
-    fun changeGrain(dice: Dice, grain: Int)
-    fun changeAllGrain(grain: Int)
-    //else
-}
 
 class PopUp(
     private val view: View,

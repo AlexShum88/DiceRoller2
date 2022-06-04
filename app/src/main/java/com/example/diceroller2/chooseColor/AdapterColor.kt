@@ -4,15 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.diceroller2.DiffUtilComparator
 import com.example.diceroller2.databinding.ColorViewBinding
 import com.example.diceroller2.model.DColor
-
-interface ColorActionListener{
-    fun changeFocus(dColor: DColor)
-}
 
 class AdapterColor(
     private val actionListener: ColorActionListener
@@ -23,11 +17,13 @@ class AdapterColor(
 
     var dColors = emptyList<DColor>()
     set(value) {
-        val lav = listOf(value).map { it[0] }
-        val callback = DiffUtilComparator(field, lav)
-        val resualt = DiffUtil.calculateDiff(callback)
+//        val lav = listOf(value).map { it[0] }
+//        val callback = DiffUtilComparator(field, lav)
+//        val resualt = DiffUtil.calculateDiff(callback)
+//        field = value
+//        resualt.dispatchUpdatesTo(this)
         field = value
-        resualt.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorHolder {

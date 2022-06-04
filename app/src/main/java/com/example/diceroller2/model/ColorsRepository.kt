@@ -1,5 +1,6 @@
 package com.example.diceroller2.model
 
+import android.content.res.Resources
 import com.example.diceroller2.R
 
 typealias DColorsListener = (colors: List<DColor>)->Unit
@@ -12,7 +13,8 @@ class ColorsRepository{
         DColor(R.color.purple_500, false),
         DColor(R.color.purple_700, false),
         DColor(R.color.white, false),
-        DColor(R.color.purple_200, false)
+        DColor(R.color.purple_200, false),
+
     )
 
     private val listeners = mutableSetOf<DColorsListener>()

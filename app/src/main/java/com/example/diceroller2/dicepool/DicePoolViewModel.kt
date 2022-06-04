@@ -1,6 +1,5 @@
 package com.example.diceroller2.dicepool
 
-import android.graphics.drawable.Drawable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,7 @@ import com.example.diceroller2.R
 import com.example.diceroller2.model.*
 
 class DicePoolViewModel(
-    private val repository: DiceMainRepository,
+    private val repository: DiceRepository,
     private val switchColor: SwitchColor
 ) : ViewModel() {
 
@@ -46,7 +45,7 @@ class DicePoolViewModel(
     }
 
     private fun createStartDice(){
-        DiceFactory.createDices(6, R.color.purple_700, R.drawable.test,6)
+        DiceFactory.createDices(6, R.color.purple_700, "start/6/1.png",6)
             .forEach { repository.addDice(it) }
         _dicesLD.value = repository.getDices()
     }
@@ -59,7 +58,7 @@ class DicePoolViewModel(
         DiceActions.rollAllPreviousDices(dice, repository)
     }
 
-    fun addDice(grain: Int, color: Int, image: Int){
+    fun addDice(grain: Int, color: Int, image: String){
         val dice = DiceFactory.createDice(grain, color, image)
         repository.addDice(dice)
     }
@@ -94,8 +93,8 @@ class DicePoolViewModel(
         repository.removeDice(dice)
     }
 
-    fun changeImage(dice: Dice) {
-        DiceActions.changeDiceImage(dice, R.drawable.ic_launcher_foreground, repository)
-    }
+//    fun changeImage(dice: Dice) {
+//        DiceActions.changeDiceImage(dice, R.drawable.ic_launcher_foreground, repository)
+//    }
 
 }

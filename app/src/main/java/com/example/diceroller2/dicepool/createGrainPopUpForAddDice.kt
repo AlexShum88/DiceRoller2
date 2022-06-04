@@ -14,8 +14,8 @@ import com.example.diceroller2.model.DiceRepository
     fun createGrainPopUpForAddDice(
         view: View,
         color: Int,
-        image: Int,
-        action: (Int, Int, Int) -> Unit
+        image: String,
+        action: (Int, Int, String) -> Unit
     ) {
         val popUp = PopupMenu(view.context, view)
 

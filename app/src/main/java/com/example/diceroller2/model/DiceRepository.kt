@@ -1,7 +1,7 @@
 package com.example.diceroller2.model
+typealias DiceListListener = (dices: List<Dice>) -> Unit
 
-
-class DiceRepository: DiceMainRepository{
+class DiceRepository{
 
     //!!!!! huinia
 
@@ -11,29 +11,29 @@ class DiceRepository: DiceMainRepository{
 
     private val listeners = mutableSetOf<DiceListListener>()
 
-    override fun addDice(dice: Dice){
+    fun addDice(dice: Dice){
         dices.add(dice)
         notifyListeners()
     }
 
 
-    override fun removeDice(dice: Dice){
+    fun removeDice(dice: Dice){
         dices.remove(dice)
         notifyListeners()
     }
 
-    override fun getDices(): MutableList<Dice> = dices
+    fun getDices(): MutableList<Dice> = dices
 
-    override fun addListener(listener: DiceListListener){
+    fun addListener(listener: DiceListListener){
         listeners.add(listener)
         listener.invoke(dices)
     }
 
-    override fun removeListener(listener: DiceListListener){
+    fun removeListener(listener: DiceListListener){
         listeners.remove(listener)
     }
 
-    override fun notifyListeners(){
+    fun notifyListeners(){
         listeners.forEach {
             it.invoke(dices)
         }

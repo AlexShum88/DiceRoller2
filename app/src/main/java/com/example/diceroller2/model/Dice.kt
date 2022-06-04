@@ -7,6 +7,8 @@ import kotlinx.parcelize.Parcelize
 data class Dice(
     var grain: Int,
     var value: Int,
-    var image: Int,
+    var image: String,
     var color: Int,
+    var pack: String = "start"
 ): Parcelable
+

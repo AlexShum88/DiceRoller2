@@ -29,7 +29,7 @@ class DicePoolFragment(
 
     //dummy
     val color = R.color.purple_200
-    val image = R.drawable.start_d6
+    val image = "2.png"
     val grain = 6
     //
 
