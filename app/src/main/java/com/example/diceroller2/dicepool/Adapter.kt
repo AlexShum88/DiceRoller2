@@ -1,13 +1,15 @@
 package com.example.diceroller2.dicepool
 
+import android.graphics.drawable.VectorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.diceroller2.DiffUtilComparator
 import com.example.diceroller2.databinding.DiceBinding
 import com.example.diceroller2.model.Dice
+
 typealias SwitchListener = (switch: Boolean)-> Unit
 class DiceAdapter(
     private val fragment: DicePoolFragment,
@@ -18,8 +20,12 @@ class DiceAdapter(
     class ViewHolder(val binding: DiceBinding): RecyclerView.ViewHolder(binding.root)
     var dices = emptyList<Dice>()
         set(value) {
+            val lav = listOf(value).map { it[0] }
+            val callback = DiffUtilComparator(field, lav)
+            val resualt = DiffUtil.calculateDiff(callback)
             field = value
-            notifyDataSetChanged()
+            resualt.dispatchUpdatesTo(this)
+
         }
 
 
@@ -39,8 +45,15 @@ class DiceAdapter(
         with(holder.binding){
 //            diceImage.tag = dice
             root.tag = dice
-            diceImage.setImageResource(dice.image)
-            DrawableCompat.setTint(diceImage.drawable, ContextCompat.getColor(fragment.requireContext(), dice.color))
+
+//            diceImage.setImageResource(dice.image)
+            val asd = fragment.requireContext().assets.open("test.xml")
+            val d = VectorDrawable.createFromStream(asd, null)
+
+            diceImage.setImageDrawable(d)
+//            diceImage.setColorFilter(R.color.teal_700)
+
+//            DrawableCompat.setTint(diceImage.drawable, ContextCompat.getColor(fragment.requireContext(), dice.color))
             diceValue.textSize = 36f
             diceValue.text = dice.value.toString()
 
@@ -62,6 +75,5 @@ class DiceAdapter(
         PopUp(diceView, dicePopUpAction).createDicePop()
         return true
     }
-
 
 }

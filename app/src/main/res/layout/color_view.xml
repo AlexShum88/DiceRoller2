@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_start_dice" />
+        app:srcCompat="@drawable/start_d6" />
 
     <ImageView
         android:id="@+id/color_chose"

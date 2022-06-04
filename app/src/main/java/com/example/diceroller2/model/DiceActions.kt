@@ -1,5 +1,9 @@
 package com.example.diceroller2.model
 
+import android.graphics.drawable.Drawable
+import com.example.diceroller2.App
+import com.example.diceroller2.R
+import java.lang.Exception
 import java.lang.IllegalArgumentException
 import kotlin.random.Random
 
@@ -13,25 +17,39 @@ object DiceActions {
 
     }
 
-    fun rollAllPreviousDices(dice: Dice, repository: DiceMainRepository){
+    fun rollAllPreviousDices(dice: Dice, repository: DiceMainRepository) {
         val dices = repository.getDices()
         val index = dices.indexOfFirst { it === dice }
-        if (index<0) return
+        if (index < 0) return
         (0..index).forEach {
             rollDice(dices[it], repository)
         }
         noActiveDicesToDefault(index, dices)
     }
 
-    fun changeGrain(dice: Dice, newGrain: Int, repository: DiceMainRepository){
+    fun changeGrain(dice: Dice, newGrain: Int, repository: DiceMainRepository, currentPack: String) {
         val diceC = findDice(dice, repository)
         diceC.grain = newGrain
+
+        val newImage = getRes("${currentPack}_d$newGrain", R.drawable::class.java)
+        changeDiceImage(dice, newImage, repository)
         notifyRepositoryListeners(repository)
     }
 
-    fun noActiveDicesToDefault(index: Int, dices: List<Dice>){
 
-        (index+1..dices.lastIndex).forEach{
+    private fun <T> getRes(name: String, res: Class<T>): Int {
+        return try {
+            val f = res.getDeclaredField(name)
+            f.getInt(f)
+        } catch (e: Exception) {
+            e.toString()
+            -1
+        }
+    }
+
+    fun noActiveDicesToDefault(index: Int, dices: List<Dice>) {
+
+        (index + 1..dices.lastIndex).forEach {
             dices[it].value = 1
         }
     }
@@ -60,7 +78,7 @@ object DiceActions {
             ?: throw IllegalArgumentException("no such dice")
     }
 
-    private fun notifyRepositoryListeners(repository: DiceMainRepository){
+    private fun notifyRepositoryListeners(repository: DiceMainRepository) {
         repository.notifyListeners()
     }
 

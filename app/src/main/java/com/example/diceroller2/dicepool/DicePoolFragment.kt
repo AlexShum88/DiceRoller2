@@ -1,15 +1,18 @@
 package com.example.diceroller2.dicepool
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.diceroller2.MainActivity
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import com.example.diceroller2.factory
@@ -26,7 +29,7 @@ class DicePoolFragment(
 
     //dummy
     val color = R.color.purple_200
-    val image = R.drawable.ic_start_dice
+    val image = R.drawable.start_d6
     val grain = 6
     //
 
@@ -40,6 +43,15 @@ class DicePoolFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val preferences = this.requireActivity().getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        println("FFFF"+preferences.contains(MainActivity.CURRENT_DICE_PACK))
+
+        var currentPack = preferences.getString(MainActivity.CURRENT_DICE_PACK, "start")
+                            preferences.edit()
+                        .putString(MainActivity.CURRENT_DICE_PACK, "start")
+                        .apply()
+
 
         var colorSwitcher = false
 
@@ -65,11 +77,16 @@ class DicePoolFragment(
                 }
 
                 override fun changeGrain(dice: Dice, grain: Int) {
-                    viewModel.changeGrain(dice, grain)
+                    viewModel.changeGrain(dice, grain, currentPack!!)
+                    /////////////////////
+//                    preferences.edit()
+//                        .putString(MainActivity.CURRENT_DICE_PACK, "dodik")
+//                        .apply()
+                    /////////////////////
                 }
 
                 override fun changeAllGrain(grain: Int) {
-                    viewModel.changeAllGrainForAll(grain)
+                    viewModel.changeAllGrainForAll(grain, currentPack!!)
                 }
 
 

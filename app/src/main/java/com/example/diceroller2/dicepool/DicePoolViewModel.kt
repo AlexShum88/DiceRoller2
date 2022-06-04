@@ -1,5 +1,6 @@
 package com.example.diceroller2.dicepool
 
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -45,7 +46,7 @@ class DicePoolViewModel(
     }
 
     private fun createStartDice(){
-        DiceFactory.createDices(6, R.color.purple_700, R.drawable.ic_start_dice,6)
+        DiceFactory.createDices(6, R.color.purple_700, R.drawable.test,6)
             .forEach { repository.addDice(it) }
         _dicesLD.value = repository.getDices()
     }
@@ -71,6 +72,7 @@ class DicePoolViewModel(
     }
 
     fun startChangeColorRegime(){
+//        _colorSwitcher.value!!.switch = true
         switchColor.switch = true
     }
 
@@ -78,13 +80,13 @@ class DicePoolViewModel(
         switchColor.switch = false
     }
 
-    fun changeGrain(dice: Dice, newGrain: Int){
-        DiceActions.changeGrain(dice, newGrain, repository)
+    fun changeGrain(dice: Dice, newGrain: Int, currentPack: String){
+        DiceActions.changeGrain(dice, newGrain, repository, currentPack)
     }
 
-    fun changeAllGrainForAll(newGrain: Int){
+    fun changeAllGrainForAll(newGrain: Int, currentPack: String){
         _dicesLD.value!!.forEach {
-            DiceActions.changeGrain(it, newGrain, repository)
+            DiceActions.changeGrain(it, newGrain, repository, currentPack)
         }
     }
 
