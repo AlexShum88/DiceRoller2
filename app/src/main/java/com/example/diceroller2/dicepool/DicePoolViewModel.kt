@@ -45,7 +45,7 @@ class DicePoolViewModel(
     }
 
     private fun createStartDice(){
-        DiceFactory.createDices(6, R.color.purple_700, "start/6/1.png",6)
+        DiceFactory.createDices(6, R.color.teal_200, "start/6/1.png",6)
             .forEach { repository.addDice(it) }
         _dicesLD.value = repository.getDices()
     }

@@ -1,6 +1,8 @@
 package com.example.diceroller2.model
 
+import java.util.*
 import kotlin.random.Random
+import kotlin.random.asJavaRandom
 
 
 const val imageException = ".png"
@@ -8,12 +10,12 @@ const val imageException = ".png"
 
 object DiceActions {
 
-
+    val stat = Statistic()
 
     fun rollDice(dice: Dice, repository: DiceRepository) {
         val grain = dice.grain
         val diceR = findDice(dice, repository)
-        diceR.value = Random.nextInt(1, grain + 1)
+        diceR.value = Random(System.nanoTime()).nextInt(1, grain + 1)
 //        diceR.image = "${diceR.pack}/${diceR.grain}/${diceR.value}$imageException"
         changeDiceImage(diceR)
         notifyRepositoryListeners(repository)
@@ -28,9 +30,12 @@ object DiceActions {
         val dices = repository.getDices()
         val index = dices.indexOfFirst { it === dice }
         if (index < 0) return
+        val dicesForStat = mutableListOf<Dice>()
         (0..index).forEach {
             rollDice(dices[it], repository)
+            dicesForStat.add(dices[it].copy())
         }
+        stat.thenDicesRoll(dicesForStat)
         noActiveDicesToDefault(index, dices, repository)
     }
 
@@ -45,11 +50,6 @@ object DiceActions {
         notifyRepositoryListeners(repository)
     }
 
-//    fun getRes(
-//
-//    ): String{
-//
-//    }
 
 //    private fun <T> getRes(name: String, res: Class<T>): Int {
 //        return try {

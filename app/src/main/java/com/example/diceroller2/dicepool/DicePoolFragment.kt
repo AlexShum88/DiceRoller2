@@ -29,7 +29,7 @@ class DicePoolFragment(
 
     //dummy
     val color = R.color.purple_200
-    val image = "2.png"
+    val image = "start/6/1.png"
     val grain = 6
     //
 
@@ -98,7 +98,9 @@ class DicePoolFragment(
         with(binding) {
 
             addButton.setOnClickListener {
-                createGrainPopUpForAddDice(it, color, image, viewModel::addDice)
+//                createGrainPopUpForAddDice(it, color, image, viewModel::addDice)
+                //test statistic
+                findNavController().navigate(R.id.action_dicePoolFragment_to_statisticFragment)
             }
             colorButton.setOnClickListener { viewModel.startChangeColorRegime() }
             doneButton.setOnClickListener { viewModel.endChangeColorRegime() }

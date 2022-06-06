@@ -8,4 +8,5 @@
     <string name="change_all_grains">Change all dices grains</string>
     <string name="remove_dice">Remove dice</string>
     <string name="grain_menu_text">D%1$s</string>
+    <string name="statistic_grain_text">%1$d d%2$s</string>
 </resources>
