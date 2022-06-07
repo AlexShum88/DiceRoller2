@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -61,6 +62,7 @@ class DicePoolFragment(
 
         val adapter = DiceAdapter(this,
             object : AdapterActions {
+
                 override fun onClickRoll(dice: Dice) {
 
                     if (colorSwitcher) {
@@ -68,6 +70,10 @@ class DicePoolFragment(
                     } else {
                         viewModel.rollPreviousDices(dice)
                     }
+                }
+
+                override fun setChangeAlphaRegime(): Boolean {
+                    return colorSwitcher
                 }
 
             },
@@ -95,23 +101,16 @@ class DicePoolFragment(
 
         binding = FragmentDicePoolBinding.inflate(inflater, container, false)
 
-        with(binding) {
-
-            addButton.setOnClickListener {
+        binding.addButton.setOnClickListener {
 //                createGrainPopUpForAddDice(it, color, image, viewModel::addDice)
                 //test statistic
                 findNavController().navigate(R.id.action_dicePoolFragment_to_statisticFragment)
-            }
-            colorButton.setOnClickListener { viewModel.startChangeColorRegime() }
-            doneButton.setOnClickListener { viewModel.endChangeColorRegime() }
+
+
         }
 
-        viewModel.colorSwitcher.observe(viewLifecycleOwner) {
-            binding.paletteFragment.isVisible = it.switch
-            binding.selectColor.setBackgroundResource(it.color)
-        }
 
-        binding.selectColor.setOnClickListener { findNavController().navigate(R.id.action_dicePoolFragment_to_chooseColorFragment) }
+        setColorButton(binding.colorButton)
 
         viewModel.dicesLD.observe(viewLifecycleOwner) {
             adapter.dices = it
@@ -140,6 +139,8 @@ class DicePoolFragment(
             }
         })
     }
+
+
     fun createDice(grain: Int){
 
         viewModel.addDice(grain, color, image)
@@ -150,5 +151,37 @@ class DicePoolFragment(
         viewModel.onDestroy()
     }
 
+    fun setColorButton(button: Button){
+
+        button.setOnLongClickListener{
+            findNavController().navigate(R.id.action_dicePoolFragment_to_chooseColorFragment)
+            return@setOnLongClickListener true
+        }
+
+        viewModel.colorSwitcher.observe(viewLifecycleOwner) {
+
+//            button.setBackgroundColor(binding.root.context.getColor(R.color.white))
+
+            if (it.switch){
+                button.setBackgroundColor(binding.root.context.getColor(it.color))
+            }
+            else{
+                button.setBackgroundColor(binding.root.context.getColor(R.color.white))
+
+            }
+            button.setOnClickListener { _->
+                if(!it.switch) {
+                    viewModel.startChangeColorRegime()
+                    //todo change button image then change regime
+
+                }
+                else {
+                    viewModel.endChangeColorRegime()
+                }
+            }
+        }
+
+
+    }
 
 }

@@ -46,7 +46,7 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
                 val colorRow = TextView(holder.itemView.context)
                 colorRow.textSize = 24f
                 colorRow.setTextColor(ContextCompat.getColor(holder.itemView.context, a.key))
-                colorRow.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                colorRow.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
                 colorRow.text = a.value
                 colorRow.id  = View.generateViewId()
                 holder.binding.root.addView(colorRow)

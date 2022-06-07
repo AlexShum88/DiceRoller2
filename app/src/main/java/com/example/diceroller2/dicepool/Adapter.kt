@@ -87,8 +87,10 @@ class DiceAdapter(
         val dice = diceView.tag as Dice
         val index = dices.indexOfFirst { it === dice }
         if (index < 0) return
-        divider = index
+//        divider = index
         adapterActions.onClickRoll(dice)
+        divider = if(adapterActions.setChangeAlphaRegime()) dices.size
+        else index
         println(dice.value)
     }
 
