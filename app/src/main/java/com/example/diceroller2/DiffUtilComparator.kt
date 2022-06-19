@@ -1,7 +1,6 @@
 package com.example.diceroller2
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.diceroller2.model.Dice
 
 class  DiffUtilComparator<T>(
     val oldItem: List<T>,

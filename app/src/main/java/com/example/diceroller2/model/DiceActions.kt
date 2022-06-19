@@ -1,8 +1,6 @@
 package com.example.diceroller2.model
 
-import java.util.*
 import kotlin.random.Random
-import kotlin.random.asJavaRandom
 
 
 const val imageException = ".png"

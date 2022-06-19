@@ -2,7 +2,7 @@ package com.example.diceroller2.model
 
 object DiceFactory {
 
-    fun createDice(grain: Int, color: Int, image: String): Dice{
+    fun createDice(grain: Int, color: Int, image: String): Dice {
         return Dice(grain = grain, color = color, image = image, value = 1)
     }
 

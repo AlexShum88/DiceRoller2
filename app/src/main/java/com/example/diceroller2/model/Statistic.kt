@@ -1,7 +1,6 @@
 package com.example.diceroller2.model
 
 import android.text.format.DateFormat
-import com.example.diceroller2.App
 import java.util.*
 
 //typealias StatisticListener = (Map<String, List<Dice>>)->Unit

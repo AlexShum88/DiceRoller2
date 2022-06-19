@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -15,6 +16,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        kapt{
+            arguments{
+                arg("room.schemaLocation", "${projectDir}/schemas")
+            }
+        }
     }
 
     buildTypes {
@@ -54,4 +60,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-runtime-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-common-ktx:2.4.2'
+    implementation "androidx.room:room-ktx:2.4.2"
+    annotationProcessor 'androidx.room:room-compiler:2.4.2'
+    kapt "androidx.room:room-compiler:2.4.2"
+    androidTestImplementation "androidx.room:room-testing:2.4.2"
 }

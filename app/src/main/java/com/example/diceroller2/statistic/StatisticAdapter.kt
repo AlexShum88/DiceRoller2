@@ -38,7 +38,7 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
             grain.textSize = 32f
             grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
             grain.text = holder.itemView.context.getString(R.string.statistic_grain_text, item.dices.size, it.grain)
-            grain.id  = View.generateViewId()
+//            grain.id  = View.generateViewId()
             holder.binding.root.addView(grain)
 
             val colorsRow = it.colorsAndResults
@@ -48,12 +48,13 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
                 colorRow.setTextColor(ContextCompat.getColor(holder.itemView.context, a.key))
                 colorRow.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
                 colorRow.text = a.value
-                colorRow.id  = View.generateViewId()
+//                colorRow.id  = View.generateViewId()
                 holder.binding.root.addView(colorRow)
             }
         }
 
     }
+
 
     override fun getItemCount(): Int = list.size
 

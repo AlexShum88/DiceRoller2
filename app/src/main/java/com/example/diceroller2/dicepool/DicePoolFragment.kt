@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -104,7 +103,8 @@ class DicePoolFragment(
         binding.addButton.setOnClickListener {
 //                createGrainPopUpForAddDice(it, color, image, viewModel::addDice)
                 //test statistic
-                findNavController().navigate(R.id.action_dicePoolFragment_to_statisticFragment)
+//                findNavController().navigate(R.id.action_dicePoolFragment_to_statisticFragment)
+            findNavController().navigate(R.id.action_dicePoolFragment_to_presetsFragment)
 
 
         }
@@ -164,9 +164,11 @@ class DicePoolFragment(
 
             if (it.switch){
                 button.setBackgroundColor(binding.root.context.getColor(it.color))
+                Toast.makeText(requireContext(), "Change Color regime ON", Toast.LENGTH_LONG).show()
             }
             else{
                 button.setBackgroundColor(binding.root.context.getColor(R.color.white))
+                Toast.makeText(requireContext(), "Change Color regime OFF", Toast.LENGTH_LONG).show()
 
             }
             button.setOnClickListener { _->

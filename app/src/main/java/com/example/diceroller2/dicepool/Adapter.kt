@@ -1,18 +1,12 @@
 package com.example.diceroller2.dicepool
 
-import android.graphics.Color
 import android.graphics.drawable.VectorDrawable
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.diceroller2.DiffUtilComparator
-import com.example.diceroller2.R
 import com.example.diceroller2.databinding.DiceBinding
 import com.example.diceroller2.model.Dice
-import com.example.diceroller2.model.DiceActions
 
 typealias SwitchListener = (switch: Boolean) -> Unit
 

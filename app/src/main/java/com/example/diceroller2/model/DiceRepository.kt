@@ -1,4 +1,5 @@
 package com.example.diceroller2.model
+
 typealias DiceListListener = (dices: List<Dice>) -> Unit
 
 class DiceRepository{
