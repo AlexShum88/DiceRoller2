@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.allViews
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.StatisticLineBinding
@@ -23,7 +24,7 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatisticViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = StatisticLineBinding.inflate(inflater)
+        val binding = StatisticLineBinding.inflate(inflater, parent, false)
         return StatisticViewHolder(binding)
     }
 
@@ -31,25 +32,34 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
         val item = list[position]
         holder.binding.dateTextView.text = item.date
         val statistic = createStatText(item.dices)
+        holder.binding.layoutForDices.allViews
+            .filter { it.tag == "diceView" }
+            .toList()
+            .forEach {
+                holder.binding.layoutForDices.removeView(it)
+            }
+
 
         statistic.forEach {
 
             val grain = TextView(holder.itemView.context)
+            grain.tag = "diceView"
             grain.textSize = 32f
             grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
             grain.text = holder.itemView.context.getString(R.string.statistic_grain_text, item.dices.size, it.grain)
 //            grain.id  = View.generateViewId()
-            holder.binding.root.addView(grain)
+            holder.binding.layoutForDices.addView(grain)
 
             val colorsRow = it.colorsAndResults
             colorsRow.forEach { a->
                 val colorRow = TextView(holder.itemView.context)
+                colorRow.tag = "diceView"
                 colorRow.textSize = 24f
                 colorRow.setTextColor(ContextCompat.getColor(holder.itemView.context, a.key))
                 colorRow.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
                 colorRow.text = a.value
 //                colorRow.id  = View.generateViewId()
-                holder.binding.root.addView(colorRow)
+                holder.binding.layoutForDices.addView(colorRow)
             }
         }
 

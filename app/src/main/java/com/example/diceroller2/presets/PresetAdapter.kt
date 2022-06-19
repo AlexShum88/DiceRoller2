@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.allViews
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diceroller2.databinding.PresetLineBinding
 import com.example.diceroller2.model.Dice
@@ -35,32 +36,34 @@ class PresetAdapter(
         return PresetViewHolder(binding)
     }
 
-    fun createDiceTextView() {
-
-    }
 
     override fun onBindViewHolder(holder: PresetViewHolder, position: Int) {
         val preset = listOfPresets[position]
         val name = preset.first
         val dices = preset.second
-        val grainsId = mutableListOf<Int>()
         var grainsViews = emptyList<Int>()
-        println("FLOW REFID ${holder.binding.mainFlow.referencedIds}")
-        if (holder.binding.mainFlow.referencedIds.isEmpty()) {
-            grainsViews = dices.map {
-                val grain = TextView(holder.itemView.context)
-                grain.textSize = 24f
-                grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
-                grain.text = "D${it.grain}"
-                grain.setTextColor(ContextCompat.getColor(holder.itemView.context, it.color))
-                grain.id = ViewCompat.generateViewId()
-                grainsId.add(grain.id)
+        holder.binding.constraintPresetLine.allViews
+            .filter { it.tag == "diceView" }
+            .toList()
+            .forEach {
+                holder.binding.constraintPresetLine.removeView(it)
+            }
+
+        grainsViews = dices.map {
+            val grain = TextView(holder.itemView.context)
+            grain.tag = "diceView"
+            grain.textSize = 24f
+            grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
+            grain.text = "D${it.grain}"
+            grain.setTextColor(ContextCompat.getColor(holder.itemView.context, it.color))
+            grain.id = ViewCompat.generateViewId()
+
             holder.binding.constraintPresetLine.addView(grain)
 //            holder.binding.mainFlow.addView(grain)
-                grain.id
-            }
-            holder.binding.mainFlow.referencedIds = grainsViews.toIntArray()
+            grain.id
         }
+        holder.binding.mainFlow.referencedIds = grainsViews.toIntArray()
+
 
         with(holder.binding) {
             savePresetButton.tag = preset
