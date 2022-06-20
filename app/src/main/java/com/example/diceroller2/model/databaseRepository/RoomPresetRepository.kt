@@ -7,6 +7,7 @@ import com.example.diceroller2.model.database.DiceDao
 import com.example.diceroller2.model.database.PresetDao
 import com.example.diceroller2.model.database.entities.DiceEntity
 import com.example.diceroller2.model.database.entities.PresetEntity
+import com.example.diceroller2.presets.PresetAdapter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.lang.NullPointerException
@@ -17,11 +18,19 @@ class RoomPresetRepository(
 ) {
 
         fun getPresetsNameWithDice(): Flow<List<Pair<String, List<Dice>>>> =
-        presetDao.getPresets().map {
-            it.map {
+        presetDao.getPresets().map { a->
+            a.map {
                 Pair(it.name, diceDao.getAllDicesByPresetId(it.id).map { ds -> ds.toDice() })
             }
         }
+
+    fun getPresetsWithDice(): Flow<List<Pair<PresetEntity, List<Dice>>>> =
+        presetDao.getPresets().map { a->
+            a.map{
+                Pair(it, diceDao.getAllDicesByPresetId(it.id).map{ds->ds.toDice()})
+            }
+        }
+
 
 
     @WorkerThread
@@ -41,9 +50,7 @@ class RoomPresetRepository(
         return diceDao.getAllDicesByPresetId(presetId).map { it.toDice() }
     }
 
-    fun changePresetName(oldName: String, newName: String) {
-        val preset = presetDao.getPresetByName(oldName) ?: throw NullPointerException()
-        preset.name = newName
+    suspend fun changePresetName(preset: PresetEntity) {
         presetDao.updatePresetName(preset)
 
     }

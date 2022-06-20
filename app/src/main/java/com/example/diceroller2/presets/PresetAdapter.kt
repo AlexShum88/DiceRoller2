@@ -3,6 +3,7 @@ package com.example.diceroller2.presets
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -10,19 +11,21 @@ import androidx.core.view.allViews
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diceroller2.databinding.PresetLineBinding
 import com.example.diceroller2.model.Dice
+import com.example.diceroller2.model.database.entities.PresetEntity
 
-interface PresetSaveActions {
-    fun saveToBD(name: String, dices: List<Dice>)
+interface PresetActions {
+    fun saveToBD(preset: PresetEntity)
+    fun addPreset(dices: List<Dice>)
 }
 
 class PresetAdapter(
-    val presetSaveActions: PresetSaveActions
+    val presetSaveActions: PresetActions
 ) : RecyclerView.Adapter<PresetAdapter.PresetViewHolder>(), View.OnClickListener {
 
     class PresetViewHolder(val binding: PresetLineBinding) :
         RecyclerView.ViewHolder(binding.root) {}
 
-    var listOfPresets = emptyList<Pair<String, List<Dice>>>()
+    var listOfPresets = emptyList<Pair<PresetEntity, List<Dice>>>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -32,15 +35,18 @@ class PresetAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PresetViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = PresetLineBinding.inflate(inflater, parent, false)
-        binding.savePresetButton.setOnClickListener { this }
+        binding.savePresetButton.setOnClickListener(this)
+        binding.addPresetToDesk.setOnClickListener(this)
         return PresetViewHolder(binding)
     }
 
 
     override fun onBindViewHolder(holder: PresetViewHolder, position: Int) {
-        val preset = listOfPresets[position]
-        val name = preset.first
-        val dices = preset.second
+        val presetWithDice = listOfPresets[position]
+        val preset = presetWithDice.first
+        val dices = presetWithDice.second
+
+
         var grainsViews = emptyList<Int>()
         holder.binding.constraintPresetLine.allViews
             .filter { it.tag == "diceView" }
@@ -62,13 +68,12 @@ class PresetAdapter(
 //            holder.binding.mainFlow.addView(grain)
             grain.id
         }
-        holder.binding.mainFlow.referencedIds = grainsViews.toIntArray()
-
-
+        
         with(holder.binding) {
-            savePresetButton.tag = preset
-            presetNameEdit.setText(name)
-
+            addPresetToDesk.tag = dices
+            savePresetButton.tag = Pair(holder.binding.presetNameEdit, preset)
+            presetNameEdit.setText(preset.name)
+            mainFlow.referencedIds = grainsViews.toIntArray()
 
         }
     }
@@ -77,9 +82,17 @@ class PresetAdapter(
 
 
     override fun onClick(v: View) {
-        val preset = v.tag as Pair<String, List<Dice>>
-        val name = preset.first
-        val dices = preset.second
-        presetSaveActions.saveToBD(name, dices)
+        when (v.tag) {
+            is Pair<*, *> -> {
+                val pair = v.tag as Pair<EditText, PresetEntity>
+                val preset = pair.second
+                preset.name = pair.first.text.toString()
+                presetSaveActions.saveToBD(preset)
+            }
+            is List<*> -> {
+                presetSaveActions.addPreset(v.tag as List<Dice>)
+            }
+        }
+
     }
 }

@@ -31,5 +31,5 @@ interface PresetDao {
     fun getPresetByName(presetName: String): PresetEntity?
 
     @Update()
-    fun updatePresetName(preset: PresetEntity)
+    suspend fun updatePresetName(preset: PresetEntity)
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.diceroller2.App
 import com.example.diceroller2.databinding.FragmentPresetsBinding
 import com.example.diceroller2.model.Dice
+import com.example.diceroller2.model.database.entities.PresetEntity
 
 class PresetsFragment : Fragment() {
 
@@ -23,10 +24,15 @@ class PresetsFragment : Fragment() {
     ): View {
         val binding = FragmentPresetsBinding.inflate(inflater, container, false)
         val adapter = PresetAdapter(
-            object: PresetSaveActions{
-                override fun saveToBD(name: String, dices: List<Dice>) {
-                    viewModel.insertPreset(name, dices)
+            object: PresetActions{
+                override fun saveToBD(preset: PresetEntity) {
+                    viewModel.changePresetName(preset)
 
+                }
+
+                override fun addPreset(dices: List<Dice>) {
+                    viewModel.presetSetDicesToDiceRepository(dices)
+                    requireActivity().onBackPressed()
                 }
 
             }

@@ -17,6 +17,11 @@ class DiceRepository{
         notifyListeners()
     }
 
+    fun addDicesFromPreset(dices: List<Dice>){
+        this.dices.clear()
+        dices.forEach { this.dices.add(it) }
+    }
+
 
     fun removeDice(dice: Dice){
         dices.remove(dice)
