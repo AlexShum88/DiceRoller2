@@ -16,6 +16,7 @@ import com.example.diceroller2.model.database.entities.PresetEntity
 interface PresetActions {
     fun saveToBD(preset: PresetEntity)
     fun addPreset(dices: List<Dice>)
+    fun deletePreset(preset: PresetEntity)
 }
 
 class PresetAdapter(
@@ -37,6 +38,7 @@ class PresetAdapter(
         val binding = PresetLineBinding.inflate(inflater, parent, false)
         binding.savePresetButton.setOnClickListener(this)
         binding.addPresetToDesk.setOnClickListener(this)
+        binding.deletePresetButton.setOnClickListener(this)
         return PresetViewHolder(binding)
     }
 
@@ -72,6 +74,7 @@ class PresetAdapter(
         with(holder.binding) {
             addPresetToDesk.tag = dices
             savePresetButton.tag = Pair(holder.binding.presetNameEdit, preset)
+            deletePresetButton.tag = preset
             presetNameEdit.setText(preset.name)
             mainFlow.referencedIds = grainsViews.toIntArray()
 
@@ -91,6 +94,9 @@ class PresetAdapter(
             }
             is List<*> -> {
                 presetSaveActions.addPreset(v.tag as List<Dice>)
+            }
+            is PresetEntity -> {
+                presetSaveActions.deletePreset(v.tag as PresetEntity)
             }
         }
 

@@ -37,6 +37,10 @@ class PresetsViewModel(
         diceRepository.addDicesFromPreset(dices)
     }
 
+    fun deletePreset(preset: PresetEntity) = viewModelScope.launch {
+        roomPresetRepository.deletePreset(preset)
+    }
+
 
 //    fun insert(word: Word) = viewModelScope.launch {
 //        repository.insert(word)

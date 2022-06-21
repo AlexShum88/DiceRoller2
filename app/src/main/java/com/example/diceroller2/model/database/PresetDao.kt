@@ -18,7 +18,7 @@ interface PresetDao {
 //    fun getPresetsWithDices(): Flow<Map<PresetEntity, List<DiceEntity>>>
 
     @Delete
-    fun deletePreset(preset: PresetEntity)
+    suspend fun deletePreset(preset: PresetEntity)
 
 
     @Query("Select id from presets where name = :presetName")

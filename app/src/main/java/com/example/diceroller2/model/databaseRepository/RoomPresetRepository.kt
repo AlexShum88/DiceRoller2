@@ -52,7 +52,13 @@ class RoomPresetRepository(
 
     suspend fun changePresetName(preset: PresetEntity) {
         presetDao.updatePresetName(preset)
+    }
 
+    suspend fun deletePreset(preset: PresetEntity){
+        diceDao.getAllDicesByPresetId(preset.id).forEach { println(it.id) }
+        presetDao.deletePreset(preset)
+        println("preset deleted")
+        diceDao.getAllDicesByPresetId(preset.id).forEach { println(it.id) }
     }
 }
 

@@ -35,6 +35,10 @@ class PresetsFragment : Fragment() {
                     requireActivity().onBackPressed()
                 }
 
+                override fun deletePreset(preset: PresetEntity) {
+                    viewModel.deletePreset(preset)
+                }
+
             }
         )
         viewModel.presetsList.observe(viewLifecycleOwner){
