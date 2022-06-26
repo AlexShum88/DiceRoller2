@@ -17,28 +17,26 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <EditText
-            android:id="@+id/presetNameEdit"
+        <TextView
+            android:id="@+id/presetName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autofillHints="name of preset"
-            android:hint="asdf"
-            android:inputType="text"
             android:layout_margin="4dp"
             app:layout_constraintBottom_toTopOf="@id/mainFlow"
-            app:layout_constraintEnd_toStartOf="@+id/save_preset_button"
+            app:layout_constraintEnd_toStartOf="@+id/add_preset_to_desk"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/save_preset_button"
+            android:id="@+id/add_preset_to_desk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save"
-            app:layout_constraintBottom_toBottomOf="@+id/presetNameEdit"
+            android:text="@string/add_button"
+            app:layout_constraintBottom_toBottomOf="@+id/presetName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/presetNameEdit"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/presetName"
+            app:layout_constraintTop_toTopOf="@+id/presetName" />
 
         <Button
             android:id="@+id/delete_preset_button"
@@ -47,17 +45,16 @@
             android:text="@string/delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_preset_to_desk"
-             />
+            app:layout_constraintTop_toBottomOf="@id/add_preset_to_desk" />
 
-        <Button
-            android:id="@+id/add_preset_to_desk"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/add_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/save_preset_button" />
+<!--        <Button-->
+<!--            android:id="@+id/add_preset_to_desk"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/add_button"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/save_preset_button" />-->
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/mainFlow"
@@ -73,7 +70,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/add_preset_to_desk"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/presetNameEdit" />
+            app:layout_constraintTop_toBottomOf="@id/presetName" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

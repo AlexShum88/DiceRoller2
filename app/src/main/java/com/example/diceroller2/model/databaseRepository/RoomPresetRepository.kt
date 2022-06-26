@@ -55,10 +55,10 @@ class RoomPresetRepository(
     }
 
     suspend fun deletePreset(preset: PresetEntity){
-        diceDao.getAllDicesByPresetId(preset.id).forEach { println(it.id) }
+
         presetDao.deletePreset(preset)
         println("preset deleted")
-        diceDao.getAllDicesByPresetId(preset.id).forEach { println(it.id) }
+
     }
 }
 

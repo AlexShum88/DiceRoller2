@@ -25,7 +25,7 @@ class PresetsFragment : Fragment() {
         val binding = FragmentPresetsBinding.inflate(inflater, container, false)
         val adapter = PresetAdapter(
             object: PresetActions{
-                override fun saveToBD(preset: PresetEntity) {
+                override fun setNewPresetName(preset: PresetEntity) {
                     viewModel.changePresetName(preset)
 
                 }
@@ -51,9 +51,7 @@ class PresetsFragment : Fragment() {
         binding.addPresetButton.setOnClickListener {
             val app = requireContext().applicationContext as App
             viewModel.insertPreset("name1" , app.resources.getDices())
-//            viewModel.presetGetDices("name")
 
-//            println("repo dices ${app.resources.getDices()}")
         }
         return binding.root
     }
