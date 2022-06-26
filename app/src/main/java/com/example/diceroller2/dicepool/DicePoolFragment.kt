@@ -1,6 +1,7 @@
 package com.example.diceroller2.dicepool
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,11 +33,18 @@ class DicePoolFragment(
     val image = "start/6/1.png"
     val grain = 6
     //
-
+    lateinit var preferences: SharedPreferences
+    lateinit var currentPack: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.onCreate()
+
+        preferences = this.requireActivity().getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        println("FFFF"+preferences.contains(MainActivity.CURRENT_DICE_PACK))
+
+
+
+
     }
 
     override fun onCreateView(
@@ -44,14 +52,8 @@ class DicePoolFragment(
         savedInstanceState: Bundle?
     ): View {
 
-        val preferences = this.requireActivity().getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
-        println("FFFF"+preferences.contains(MainActivity.CURRENT_DICE_PACK))
-
-        var currentPack = preferences.getString(MainActivity.CURRENT_DICE_PACK, "start")
-                            preferences.edit()
-                        .putString(MainActivity.CURRENT_DICE_PACK, "start")
-                        .apply()
-
+        currentPack = preferences.getString(MainActivity.CURRENT_DICE_PACK, "start") ?: "start"
+        viewModel.onCreate(currentPack)
 
         var colorSwitcher = false
 
@@ -104,7 +106,8 @@ class DicePoolFragment(
 //                createGrainPopUpForAddDice(it, color, image, viewModel::addDice)
                 //test statistic
 //                findNavController().navigate(R.id.action_dicePoolFragment_to_statisticFragment)
-            findNavController().navigate(R.id.action_dicePoolFragment_to_presetsFragment)
+//            findNavController().navigate(R.id.action_dicePoolFragment_to_presetsFragment)
+            findNavController().navigate(R.id.action_dicePoolFragment_to_packFragment)
 
 
         }
@@ -143,7 +146,7 @@ class DicePoolFragment(
 
     fun createDice(grain: Int){
 
-        viewModel.addDice(grain, color, image)
+        viewModel.addDice(grain, color, image, currentPack)
     }
 
     override fun onDestroy() {

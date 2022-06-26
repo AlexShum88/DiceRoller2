@@ -27,12 +27,12 @@ class DicePoolViewModel(
     }
 
 
-    fun onCreate(){
+    fun onCreate(currentPack: String){
         repository.addListener (diceListListener)
         if (repository.getDices().isEmpty()) {
-            createStartDice()
+            createStartDice(currentPack)
         }
-
+        repository.changeDicePack(currentPack)
 
         switchColor.addListener(colorListener)
 
@@ -44,8 +44,8 @@ class DicePoolViewModel(
         switchColor.removeListener(colorListener)
     }
 
-    private fun createStartDice(){
-        DiceFactory.createDices(6, R.color.teal_200, "start/6/1.png",6)
+    private fun createStartDice(currentPack: String){
+        DiceFactory.createDices(number = 6, color = R.color.teal_200, image = "$currentPack/6/1.png", grain = 6, pack = currentPack)
             .forEach { repository.addDice(it) }
         _dicesLD.value = repository.getDices()
     }
@@ -58,8 +58,8 @@ class DicePoolViewModel(
         DiceActions.rollAllPreviousDices(dice, repository)
     }
 
-    fun addDice(grain: Int, color: Int, image: String){
-        val dice = DiceFactory.createDice(grain, color, image)
+    fun addDice(grain: Int, color: Int, image: String, currentPack: String){
+        val dice = DiceFactory.createDice(grain, color, image, currentPack)
         repository.addDice(dice)
     }
 

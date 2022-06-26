@@ -30,6 +30,13 @@ class DiceRepository{
 
     fun getDices(): MutableList<Dice> = dices
 
+    fun changeDicePack(currentPack: String){
+        dices.forEach {
+            it.pack = currentPack
+            it.image = "${it.pack}/${it.grain}/${it.value}.png"
+        }
+    }
+
     fun addListener(listener: DiceListListener){
         listeners.add(listener)
         listener.invoke(dices)

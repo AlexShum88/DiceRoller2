@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_dicePoolFragment_to_presetsFragment"
             app:destination="@id/presetsFragment" />
+        <action
+            android:id="@+id/action_dicePoolFragment_to_packFragment"
+            app:destination="@id/packFragment" />
     </fragment>
     <fragment
         android:id="@+id/chooseColorFragment"
@@ -35,4 +38,9 @@
         android:name="com.example.diceroller2.presets.PresetsFragment"
         android:label="fragment_presets"
         tools:layout="@layout/fragment_presets" />
+    <fragment
+        android:id="@+id/packFragment"
+        android:name="com.example.diceroller2.pack.PackFragment"
+        android:label="fragment_pack_list"
+        tools:layout="@layout/fragment_pack_list" />
 </navigation>
