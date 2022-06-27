@@ -11,4 +11,8 @@
     <string name="statistic_grain_text">%1$d d%2$s</string>
     <string name="save">save</string>
     <string name="delete">delete</string>
+    <string name="choose_color">Choose color</string>
+    <string name="choose_preset">Choose preset</string>
+    <string name="choose_pack">Choose pack</string>
+    <string name="dice_pool">Dice pool</string>
 </resources>

@@ -1,25 +1,26 @@
 package com.example.diceroller2
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
-import com.example.diceroller2.chooseColor.ChooseColorFragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.example.diceroller2.databinding.ActivityMainBinding
-import com.example.diceroller2.dicepool.DicePoolFragment
 
 class MainActivity : AppCompatActivity(){
+
+    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        supportFragmentManager.beginTransaction()
-////            .replace(R.id.fragment_container_view_tag, DicePoolFragment())
-//            .replace(R.id.fragment_container_view_tag, DicePoolFragment())
-//            .commit()
+        val navHost = supportFragmentManager.findFragmentById(R.id.fragment_container_view_tag) as NavHostFragment
+        navController = navHost.navController
+        NavigationUI.setupActionBarWithNavController(this, navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     companion object{
