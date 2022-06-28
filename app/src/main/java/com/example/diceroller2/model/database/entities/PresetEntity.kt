@@ -1,6 +1,5 @@
 package com.example.diceroller2.model.database.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -8,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "presets",
     indices = [
-//        Index("name", unique = true)
+        Index("name", unique = true)
     ]
 )
 data class PresetEntity(

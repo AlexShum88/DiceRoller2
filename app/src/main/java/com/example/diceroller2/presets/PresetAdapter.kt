@@ -6,7 +6,7 @@ import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -16,6 +16,7 @@ import com.example.diceroller2.R
 import com.example.diceroller2.databinding.DialogPresetChangeNameBinding
 import com.example.diceroller2.databinding.PresetLineBinding
 import com.example.diceroller2.model.Dice
+import com.example.diceroller2.model.DiceRepository
 import com.example.diceroller2.model.database.entities.PresetEntity
 
 interface PresetActions {
@@ -25,7 +26,7 @@ interface PresetActions {
 }
 
 class PresetAdapter(
-    val presetSaveActions: PresetActions
+    private val presetSaveActions: PresetActions
 ) : RecyclerView.Adapter<PresetAdapter.PresetViewHolder>(), View.OnClickListener {
 
     class PresetViewHolder(val binding: PresetLineBinding) :
@@ -51,11 +52,11 @@ class PresetAdapter(
         val presetWithDice = listOfPresets[position]
         val preset = presetWithDice.first
         val dices = presetWithDice.second
-
+        val context = holder.itemView.context
 
         var grainsViews = emptyList<Int>()
         holder.binding.constraintPresetLine.allViews
-            .filter { it.tag == "diceView" }
+            .filter { it.tag == TAG_GRAIN_VIEW }
             .toList()
             .forEach {
                 holder.binding.constraintPresetLine.removeView(it)
@@ -63,11 +64,11 @@ class PresetAdapter(
 
         grainsViews = dices.map {
             val grain = TextView(holder.itemView.context)
-            grain.tag = "diceView"
-            grain.textSize = 24f
+            grain.tag = TAG_GRAIN_VIEW
+            grain.textSize = context.resources.getDimension(R.dimen.text_size_in_generated_view) / TEXT_SIZE_CORRECTION_DIVIDER
             grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
-            grain.text = "D${it.grain}"
-            grain.setTextColor(ContextCompat.getColor(holder.itemView.context, it.color))
+            grain.text = context.getString(R.string.grain_menu_text, it.grain.toString())
+            grain.setTextColor(ContextCompat.getColor(context, it.color))
             grain.id = ViewCompat.generateViewId()
             holder.binding.constraintPresetLine.addView(grain)
             grain.id
@@ -100,25 +101,45 @@ class PresetAdapter(
 
     }
 
-    fun changeNameDialog(context: Context, preset: PresetEntity){
+    private fun changeNameDialog(context: Context, preset: PresetEntity){
         val inflater = LayoutInflater.from(context)
         val view = DialogPresetChangeNameBinding.inflate(inflater)
         view.dialogEditText.setText(preset.name)
 
-        val listener = DialogInterface.OnClickListener { _, which ->
-            when(which){
-                DialogInterface.BUTTON_POSITIVE -> {
-                    preset.name = view.dialogEditText.text.toString()
-                    presetSaveActions.setNewPresetName(preset)
-                }
-            }
+        val listOfExistPresets = listOfPresets.map {
+            it.first.name
         }
 
-        AlertDialog.Builder(context)
-            .setMessage("Change preset name")
-            .setPositiveButton(R.string.save, listener)
+        val dialog = AlertDialog.Builder(context)
+            .setMessage(context.getString(R.string.change_preset_name))
+            .setPositiveButton(R.string.save, null)
+            .setNegativeButton(R.string.dismiss, null)
             .setView(view.root)
             .create()
-            .show()
+        dialog.setOnShowListener {
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+                val name = view.dialogEditText.text.toString().trim()
+                if (name.isEmpty()) {
+                    view.dialogEditText.error = context.getString(R.string.enter_preset_name)
+                    return@setOnClickListener
+                }
+
+                if (!listOfExistPresets.contains(name)) {
+                    preset.name = view.dialogEditText.text.toString()
+                    presetSaveActions.setNewPresetName(preset)
+                } else {
+                    view.dialogEditText.error = context.getString(R.string.such_name_exist)
+                    return@setOnClickListener
+                }
+                dialog.dismiss()
+            }
+        }
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog.show()
+    }
+
+    companion object{
+        const val TAG_GRAIN_VIEW = "grainView"
+        const val TEXT_SIZE_CORRECTION_DIVIDER = 4
     }
 }

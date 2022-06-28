@@ -18,10 +18,11 @@ import com.example.diceroller2.model.DColor
 class ChooseColorFragment : Fragment(R.layout.fragment_choose_color) {
 
 
-    lateinit var binding: FragmentChooseColorBinding
-    private val viewModel: ChooseColorViewModel by viewModels{factory()}
+    private lateinit var binding: FragmentChooseColorBinding
+    private val viewModel: ChooseColorViewModel by viewModels { factory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         viewModel.onCreate()
     }
@@ -30,34 +31,32 @@ class ChooseColorFragment : Fragment(R.layout.fragment_choose_color) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = FragmentChooseColorBinding.inflate(inflater, container, false)
-
         binding.colorDoneButton.setOnClickListener { findNavController().navigateUp() }
-
         val adapter = AdapterColor(
-            object : ColorActionListener{
+            object : ColorActionListener {
                 override fun changeFocus(dColor: DColor) {
                     viewModel.chooseColor(dColor)
                 }
             }
         )
-
-        viewModel.colors.observe(viewLifecycleOwner){
+        viewModel.colors.observe(viewLifecycleOwner) {
             adapter.dColors = it
         }
-
         binding.colorRecycler.adapter = adapter
         setLayoutManager()
         return binding.root
     }
 
     override fun onDestroy() {
+
         super.onDestroy()
         viewModel.onDestroy()
     }
 
 
-    fun setLayoutManager() {
+    private fun setLayoutManager() {
 
         binding.colorRecycler.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
@@ -66,13 +65,9 @@ class ChooseColorFragment : Fragment(R.layout.fragment_choose_color) {
                 val width = binding.colorRecycler.width
                 val itemWidth = resources.getDimensionPixelSize(R.dimen.dice_size)
                 val columns = width / itemWidth
-
                 binding.colorRecycler.layoutManager = GridLayoutManager(requireContext(), columns)
             }
         })
     }
 
-    companion object {
-        fun newInstance() = ChooseColorFragment()
-    }
 }

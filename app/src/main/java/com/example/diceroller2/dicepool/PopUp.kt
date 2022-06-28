@@ -6,15 +6,13 @@ import android.view.View
 import android.widget.PopupMenu
 import com.example.diceroller2.R
 import com.example.diceroller2.model.Dice
-import com.example.diceroller2.model.DiceRepository.Companion.GRAINS
-
+import com.example.diceroller2.model.DiceGrains
 
 
 class PopUp(
     private val view: View,
     private val actions: DicePopUpAction
-    )
-     {
+) {
 
     val dice =
         if (view.tag is Dice) view.tag as Dice else throw IllegalArgumentException("wrong view tag in pop")
@@ -49,14 +47,10 @@ class PopUp(
     }
 
     private fun createGrainMenu(id: Int) {
-
         val pop = PopupMenu(view.context, view)
-
         var i = 0
-
         val grainsID = mutableMapOf<Int, Int>()
-
-        GRAINS.forEach {
+        DiceGrains.GRAINS.forEach {
             i++
             pop.menu.add(
                 0,
@@ -66,21 +60,14 @@ class PopUp(
             )
             grainsID[i] = it
         }
-
         pop.setOnMenuItemClickListener {
-
             when (id) {
-
                 1 -> actions.changeGrain(dice, grainsID[it.itemId]!!)
-
                 2 -> actions.changeAllGrain(grainsID[it.itemId]!!)
-
                 else -> return@setOnMenuItemClickListener false
             }
-
             return@setOnMenuItemClickListener true
         }
-
         pop.show()
 
     }

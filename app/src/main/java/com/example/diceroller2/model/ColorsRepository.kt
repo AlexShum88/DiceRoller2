@@ -1,21 +1,10 @@
 package com.example.diceroller2.model
 
-import android.content.res.Resources
-import com.example.diceroller2.R
+typealias DColorsListener = (colors: List<DColor>) -> Unit
 
-typealias DColorsListener = (colors: List<DColor>)->Unit
+object ColorsRepository {
 
-class ColorsRepository{
-
-    private val colors = listOf<DColor>(
-        DColor(R.color.black, false),
-        DColor(R.color.teal_200, false),
-        DColor(R.color.purple_500, false),
-        DColor(R.color.purple_700, false),
-        DColor(R.color.white, false),
-        DColor(R.color.purple_200, false),
-
-    )
+    private val colors = ColorList.colors
 
     private val listeners = mutableSetOf<DColorsListener>()
 

@@ -32,33 +32,35 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
         val item = list[position]
         holder.binding.dateTextView.text = item.date
         val statistic = createStatText(item.dices)
+        val context = holder.itemView.context
+
         holder.binding.layoutForDices.allViews
-            .filter { it.tag == "diceView" }
+            .filter { it.tag == TAG_DICE_VIEW }
             .toList()
             .forEach {
                 holder.binding.layoutForDices.removeView(it)
             }
 
-
         statistic.forEach {
 
             val grain = TextView(holder.itemView.context)
-            grain.tag = "diceView"
-            grain.textSize = 32f
+            grain.tag = TAG_DICE_VIEW
+            grain.textSize =
+                context.resources.getDimension(R.dimen.text_size_in_generated_view_big) / TEXT_SIZE_CORRECTION_DIVIDER
             grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
-            grain.text = holder.itemView.context.getString(R.string.statistic_grain_text, item.dices.size, it.grain)
-//            grain.id  = View.generateViewId()
+
+            grain.text = context.getString(R.string.statistic_grain_text, item.dices.size, it.grain)
             holder.binding.layoutForDices.addView(grain)
 
             val colorsRow = it.colorsAndResults
-            colorsRow.forEach { a->
+            colorsRow.forEach { a ->
                 val colorRow = TextView(holder.itemView.context)
-                colorRow.tag = "diceView"
-                colorRow.textSize = 24f
+                colorRow.tag = TAG_DICE_VIEW
+                colorRow.textSize =
+                    context.resources.getDimension(R.dimen.text_size_in_generated_view) / TEXT_SIZE_CORRECTION_DIVIDER
                 colorRow.setTextColor(ContextCompat.getColor(holder.itemView.context, a.key))
                 colorRow.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
                 colorRow.text = a.value
-//                colorRow.id  = View.generateViewId()
                 holder.binding.layoutForDices.addView(colorRow)
             }
         }
@@ -68,7 +70,7 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
 
     override fun getItemCount(): Int = list.size
 
-    fun sortByColor(dices: List<Dice>): Map<Int, List<Dice>> {
+    private fun sortByColor(dices: List<Dice>): Map<Int, List<Dice>> {
         val resultMap = mutableMapOf<Int, List<Dice>>()
         dices.map { it.color }.map { a ->
             resultMap[a] = dices.filter {
@@ -78,7 +80,7 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
         return resultMap
     }
 
-    fun sortByGrain(dices: List<Dice>): Map<Int, List<Dice>> {
+    private fun sortByGrain(dices: List<Dice>): Map<Int, List<Dice>> {
         val resultMap = mutableMapOf<Int, List<Dice>>()
         dices.map { it.grain }.map { a ->
             resultMap[a] = dices.filter {
@@ -88,36 +90,39 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
         return resultMap
     }
 
-    fun getDiceValues(dices: List<Dice>): List<Int> {
-        return dices.map { it.value }
-    }
 
-    fun result(dices: List<Dice>): String {
+    private fun result(dices: List<Dice>): String {
         val e = StringBuilder()
-        val res =  dices.map {
+        val res = dices.map {
             e.append("${it.value} ")
             it.value
         }.reduce { a, b ->
-            a + b }
+            a + b
+        }
         e.append("($res)")
         return e.toString()
     }
 
 
-    fun createStatText(dices: List<Dice>): List<StatTextObj>{
+    private fun createStatText(dices: List<Dice>): List<StatTextObj> {
         val statTextList = mutableListOf<StatTextObj>()
         val grainSort = sortByGrain(dices)
         grainSort.forEach {
             val statText = StatTextObj()
             statText.grain = it.key.toString()
-            statText.colorsAndResults = sortByColor(it.value).mapValues { a->result(a.value)}
+            statText.colorsAndResults = sortByColor(it.value).mapValues { a -> result(a.value) }
             statTextList.add(statText)
         }
         return statTextList
     }
 
-    class StatTextObj(
+    private class StatTextObj(
         var grain: String = "",
         var colorsAndResults: Map<Int, String> = emptyMap(),
     )
+
+    companion object {
+        const val TAG_DICE_VIEW = "diceView"
+        const val TEXT_SIZE_CORRECTION_DIVIDER = 4
+    }
 }

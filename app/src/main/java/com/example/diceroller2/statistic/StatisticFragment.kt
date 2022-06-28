@@ -22,18 +22,14 @@ class StatisticFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         val adapter = StatisticAdapter()
         val binding = FragmentStatisticBinding.inflate(inflater,container,false)
         viewModel.statistic.observe(viewLifecycleOwner){
             adapter.list = it
         }
-
         binding.statisticRecycle.adapter = adapter
         binding.statisticRecycle.layoutManager = LinearLayoutManager(requireContext())
-
         return binding.root
-
     }
 
 

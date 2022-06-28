@@ -11,22 +11,18 @@ import kotlinx.coroutines.launch
 
 class PresetsViewModel(
     private val roomPresetRepository: RoomPresetRepository,
-    private val diceRepository: DiceRepository
 ) : ViewModel() {
 
     val presetsList = roomPresetRepository.getPresetsWithDice().asLiveData()
-
+    val presetNames = roomPresetRepository.getPresetsNames().asLiveData()
 
     fun insertPreset(name: String, dices: List<Dice>) = viewModelScope.launch {
         roomPresetRepository.setPresetsWithDices(name, dices)
     }
 
-    fun changePresetName(preset: PresetEntity)= viewModelScope.launch{
+    fun changePresetName(preset: PresetEntity) = viewModelScope.launch{
         roomPresetRepository.changePresetName(preset)
     }
-
-
-
 
     fun presetGetDices(preset: String) = viewModelScope.launch {
         val dss = roomPresetRepository.getDices(preset)
@@ -34,7 +30,7 @@ class PresetsViewModel(
     }
 
     fun presetSetDicesToDiceRepository(dices:List<Dice>){
-        diceRepository.addDicesFromPreset(dices)
+        DiceRepository.addDicesFromPreset(dices)
     }
 
     fun deletePreset(preset: PresetEntity) = viewModelScope.launch {

@@ -11,20 +11,15 @@ import com.example.diceroller2.model.DColor
 class AdapterColor(
     private val actionListener: ColorActionListener
 
-): RecyclerView.Adapter<AdapterColor.ColorHolder>(), View.OnClickListener {
+) : RecyclerView.Adapter<AdapterColor.ColorHolder>(), View.OnClickListener {
 
-    inner class ColorHolder(val binding: ColorViewBinding): RecyclerView.ViewHolder(binding.root)
+    inner class ColorHolder(val binding: ColorViewBinding) : RecyclerView.ViewHolder(binding.root)
 
     var dColors = emptyList<DColor>()
-    set(value) {
-//        val lav = listOf(value).map { it[0] }
-//        val callback = DiffUtilComparator(field, lav)
-//        val resualt = DiffUtil.calculateDiff(callback)
-//        field = value
-//        resualt.dispatchUpdatesTo(this)
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorHolder {
         val inflater = LayoutInflater.from(parent.context)

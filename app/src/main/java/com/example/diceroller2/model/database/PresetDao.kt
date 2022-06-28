@@ -1,8 +1,6 @@
 package com.example.diceroller2.model.database
 
 import androidx.room.*
-import com.example.diceroller2.model.Dice
-import com.example.diceroller2.model.database.entities.DiceEntity
 import com.example.diceroller2.model.database.entities.PresetEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -12,10 +10,10 @@ interface PresetDao {
     suspend fun insertPreset(preset: PresetEntity): Long
 
     @Query("Select * from presets")
-    fun getPresets():Flow<List<PresetEntity>>
+    fun getPresets(): Flow<List<PresetEntity>>
 
-//    @Query("select presets.name as name, dice_table.* from presets join dice_table on  presets.id = dice_table.preset_id ")
-//    fun getPresetsWithDices(): Flow<Map<PresetEntity, List<DiceEntity>>>
+    @Query("Select name from presets")
+    fun getPresetsNames(): Flow<List<String>>
 
     @Delete
     suspend fun deletePreset(preset: PresetEntity)
@@ -25,7 +23,7 @@ interface PresetDao {
     suspend fun getPresetIdByName(presetName: String): Int?
 
     @Query("Select name from presets where name = :presetId")
-    fun getPresetNameById(presetId:Int): String?
+    fun getPresetNameById(presetId: Int): String?
 
     @Query("Select * from presets where name = :presetName")
     fun getPresetByName(presetName: String): PresetEntity?

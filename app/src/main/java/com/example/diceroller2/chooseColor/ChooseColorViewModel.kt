@@ -9,7 +9,6 @@ import com.example.diceroller2.model.DColorsListener
 import com.example.diceroller2.model.SwitchColor
 
 class ChooseColorViewModel(
-    private val colorsRepository: ColorsRepository,
     private val switchColor: SwitchColor
 ) : ViewModel() {
 
@@ -21,17 +20,19 @@ class ChooseColorViewModel(
     }
 
     fun onCreate() {
-        colorsRepository.addListener(colorListener)
+        ColorsRepository.addListener(colorListener)
 
-        val dColor = colorsRepository.getColors().firstOrNull{ it.backgroundColor == switchColor.color} ?: return
-        colorsRepository.changeChecked(dColor)
+        val dColor =
+            ColorsRepository.getColors().firstOrNull { it.backgroundColor == switchColor.color }
+                ?: return
+        ColorsRepository.changeChecked(dColor)
     }
 
     fun onDestroy() {
-        colorsRepository.removeListener(colorListener)
+        ColorsRepository.removeListener(colorListener)
     }
 
     fun chooseColor(color: DColor) {
-        if(colorsRepository.changeChecked(color)) switchColor.color = color.backgroundColor
+        if (ColorsRepository.changeChecked(color)) switchColor.color = color.backgroundColor
     }
 }

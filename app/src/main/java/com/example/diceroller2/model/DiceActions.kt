@@ -3,25 +3,24 @@ package com.example.diceroller2.model
 import kotlin.random.Random
 
 
-const val imageException = ".png"
+
 
 
 object DiceActions {
 
-    val stat = Statistic()
+    const val IMAGE_RES = ".png"
+    val stat = Statistic
 
-    fun rollDice(dice: Dice, repository: DiceRepository) {
+    fun rollDice(dice: Dice) {
         val grain = dice.grain
-        val diceR = findDice(dice, repository)
+        val diceR = findDice(dice)
         diceR.value = Random(System.nanoTime()).nextInt(1, grain + 1)
-//        diceR.image = "${diceR.pack}/${diceR.grain}/${diceR.value}$imageException"
         changeDiceImage(diceR)
-        notifyRepositoryListeners(repository)
-
+        notifyRepositoryListeners()
     }
 
-    private fun changeDiceImage(dice: Dice){
-        dice.image = "${dice.pack}/${dice.grain}/${dice.value}$imageException"
+    fun changeDiceImage(dice: Dice) {
+        dice.image = "${dice.pack}/${dice.grain}/${dice.value}$IMAGE_RES"
     }
 
     fun rollAllPreviousDices(dice: Dice, repository: DiceRepository) {
@@ -30,60 +29,38 @@ object DiceActions {
         if (index < 0) return
         val dicesForStat = mutableListOf<Dice>()
         (0..index).forEach {
-            rollDice(dices[it], repository)
+            rollDice(dices[it])
             dicesForStat.add(dices[it].copy())
         }
         stat.thenDicesRoll(dicesForStat)
-        noActiveDicesToDefault(index, dices, repository)
+        noActiveDicesToDefault(index, dices)
     }
 
-    fun changeGrain(dice: Dice, newGrain: Int, repository: DiceRepository, currentPack: String) {
-        val diceC = findDice(dice, repository)
-        diceC.grain = newGrain
-        diceC.value = 1
-        changeDiceImage(diceC)
-//        val newImage = "${diceR.pack}/${diceR.grain}/${diceR.value}$imageException"
-//        val newImage = getRes("${currentPack}_d$newGrain", R.drawable::class.java)
-//        changeDiceImage(dice, newImage, repository)
-        notifyRepositoryListeners(repository)
-    }
-
-
-//    private fun <T> getRes(name: String, res: Class<T>): Int {
-//        return try {
-//            val f = res.getDeclaredField(name)
-//            f.getInt(f)
-//        } catch (e: Exception) {
-//            e.toString()
-//            -1
-//        }
-//    }
-
-    fun noActiveDicesToDefault(index: Int, dices: List<Dice>, repository: DiceRepository) {
-
+    private fun noActiveDicesToDefault(index: Int, dices: List<Dice>) {
         (index + 1..dices.lastIndex).forEach {
             dices[it].value = 1
             changeDiceImage(dices[it])
         }
-        notifyRepositoryListeners(repository)
+        notifyRepositoryListeners()
     }
 
-    fun changeDiceColor(dice: Dice, color: Int, repository: DiceRepository) {
-        val diceR = findDice(dice, repository)
+    fun changeGrain(dice: Dice, newGrain: Int) {
+        val diceC = findDice(dice)
+        diceC.grain = newGrain
+        diceC.value = 1
+        changeDiceImage(diceC)
+        notifyRepositoryListeners()
+    }
+
+    fun changeDiceColor(dice: Dice, color: Int) {
+        val diceR = findDice(dice)
         diceR.color = color
-        notifyRepositoryListeners(repository)
-
+        notifyRepositoryListeners()
     }
 
-//    fun changeDiceImage(dice: Dice, image: String, repository: DiceListenersRepository) {
-//        val diceR = findDice(dice, repository)
-//        diceR.image = image
-//        notifyRepositoryListeners(repository)
-//
-//    }
 
-    private fun findDice(dice: Dice, repository: DiceRepository): Dice {
-        return repository.getDices().firstOrNull { it === dice }
+    private fun findDice(dice: Dice): Dice {
+        return DiceRepository.getDices().firstOrNull { it === dice }
             ?: throw IllegalArgumentException("no such dice")
     }
 
@@ -92,8 +69,8 @@ object DiceActions {
             ?: throw IllegalArgumentException("no such dice")
     }
 
-    private fun notifyRepositoryListeners(repository: DiceRepository) {
-        repository.notifyListeners()
+    private fun notifyRepositoryListeners() {
+        DiceRepository.notifyListeners()
     }
 
 

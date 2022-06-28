@@ -15,4 +15,9 @@
     <string name="choose_preset">Choose preset</string>
     <string name="choose_pack">Choose pack</string>
     <string name="dice_pool">Dice pool</string>
+    <string name="change_preset_name">Change preset name</string>
+    <string name="set_hint_preset_name">name of preset</string>
+    <string name="such_name_exist">Such preset exist. Please change name.</string>
+    <string name="enter_preset_name">enter preset name, please</string>
+    <string name="dismiss">Dismiss</string>
 </resources>

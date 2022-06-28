@@ -7,22 +7,14 @@ import com.example.diceroller2.model.database.DiceDao
 import com.example.diceroller2.model.database.PresetDao
 import com.example.diceroller2.model.database.entities.DiceEntity
 import com.example.diceroller2.model.database.entities.PresetEntity
-import com.example.diceroller2.presets.PresetAdapter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.lang.NullPointerException
 
 class RoomPresetRepository(
-    val presetDao: PresetDao,
-    val diceDao: DiceDao
+    private val presetDao: PresetDao,
+    private val diceDao: DiceDao
 ) {
 
-        fun getPresetsNameWithDice(): Flow<List<Pair<String, List<Dice>>>> =
-        presetDao.getPresets().map { a->
-            a.map {
-                Pair(it.name, diceDao.getAllDicesByPresetId(it.id).map { ds -> ds.toDice() })
-            }
-        }
 
     fun getPresetsWithDice(): Flow<List<Pair<PresetEntity, List<Dice>>>> =
         presetDao.getPresets().map { a->
@@ -30,7 +22,6 @@ class RoomPresetRepository(
                 Pair(it, diceDao.getAllDicesByPresetId(it.id).map{ds->ds.toDice()})
             }
         }
-
 
 
     @WorkerThread
@@ -41,8 +32,8 @@ class RoomPresetRepository(
         })
     }
 
-    suspend fun getDices(presetId: Int): List<Dice> {
-        return diceDao.getAllDicesByPresetId(presetId).map { it.toDice() }
+    fun getPresetsNames(): Flow<List<String>>{
+        return presetDao.getPresetsNames()
     }
 
     suspend fun getDices(presetName: String): List<Dice> {

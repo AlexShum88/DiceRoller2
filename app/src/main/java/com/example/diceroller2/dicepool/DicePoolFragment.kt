@@ -2,13 +2,12 @@ package com.example.diceroller2.dicepool
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,6 +17,10 @@ import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import com.example.diceroller2.factory
 import com.example.diceroller2.model.Dice
+import com.example.diceroller2.model.DiceActions
+import com.example.diceroller2.model.DiceFactory
+import com.example.diceroller2.model.DiceRepository
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DicePoolFragment(
 
@@ -28,11 +31,11 @@ class DicePoolFragment(
     private val viewModel: DicePoolViewModel by viewModels { factory() }
 
 
-    //dummy
-    val color = R.color.purple_200
-    val image = "start/6/1.png"
-    val grain = 6
-    //
+//    //dummy
+//    val color = R.color.purple_200
+//    val image = "start/6/1.png"
+//    val grain = 6
+//    //
     lateinit var preferences: SharedPreferences
     lateinit var currentPack: String
 
@@ -65,7 +68,6 @@ class DicePoolFragment(
             object : AdapterActions {
 
                 override fun onClickRoll(dice: Dice) {
-
                     if (colorSwitcher) {
                         viewModel.changeColor(dice)
                     } else {
@@ -84,16 +86,11 @@ class DicePoolFragment(
                 }
 
                 override fun changeGrain(dice: Dice, grain: Int) {
-                    viewModel.changeGrain(dice, grain, currentPack!!)
-                    /////////////////////
-//                    preferences.edit()
-//                        .putString(MainActivity.CURRENT_DICE_PACK, "dodik")
-//                        .apply()
-                    /////////////////////
+                    viewModel.changeGrain(dice, grain)
                 }
 
                 override fun changeAllGrain(grain: Int) {
-                    viewModel.changeAllGrainForAll(grain, currentPack!!)
+                    viewModel.changeGrainForAllDices(grain)
                 }
 
 
@@ -103,11 +100,12 @@ class DicePoolFragment(
         binding = FragmentDicePoolBinding.inflate(inflater, container, false)
 
         binding.addButton.setOnClickListener {
-//                createGrainPopUpForAddDice(it, color, image, viewModel::addDice)
-                //test statistic
-//                findNavController().navigate(R.id.action_dicePoolFragment_to_statisticFragment)
+            val color = DiceRepository.getDices().last().color
+
+                createGrainPopUpForAddDice(it, color, currentPack, viewModel::addDice)
+//            findNavController().navigate(R.id.action_dicePoolFragment_to_statisticFragment)
 //            findNavController().navigate(R.id.action_dicePoolFragment_to_presetsFragment)
-            findNavController().navigate(R.id.action_dicePoolFragment_to_packFragment)
+//            findNavController().navigate(R.id.action_dicePoolFragment_to_packFragment)
 
 
         }
@@ -144,18 +142,12 @@ class DicePoolFragment(
     }
 
 
-    fun createDice(grain: Int){
-
-        viewModel.addDice(grain, color, image, currentPack)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         viewModel.onDestroy()
     }
 
-    fun setColorButton(button: Button){
-
+    private fun setColorButton(button: FloatingActionButton){
         button.setOnLongClickListener{
             findNavController().navigate(R.id.action_dicePoolFragment_to_chooseColorFragment)
             return@setOnLongClickListener true
@@ -163,22 +155,17 @@ class DicePoolFragment(
 
         viewModel.colorSwitcher.observe(viewLifecycleOwner) {
 
-//            button.setBackgroundColor(binding.root.context.getColor(R.color.white))
+            button.backgroundTintList = ColorStateList.valueOf(binding.root.context.getColor(it.color))
 
             if (it.switch){
-                button.setBackgroundColor(binding.root.context.getColor(it.color))
-                Toast.makeText(requireContext(), "Change Color regime ON", Toast.LENGTH_LONG).show()
+                button.setImageResource(R.drawable.paint_dice_icon)
             }
             else{
-                button.setBackgroundColor(binding.root.context.getColor(R.color.white))
-                Toast.makeText(requireContext(), "Change Color regime OFF", Toast.LENGTH_LONG).show()
-
+                button.setImageResource(R.drawable.change_color_icon)
             }
             button.setOnClickListener { _->
                 if(!it.switch) {
                     viewModel.startChangeColorRegime()
-                    //todo change button image then change regime
-
                 }
                 else {
                     viewModel.endChangeColorRegime()

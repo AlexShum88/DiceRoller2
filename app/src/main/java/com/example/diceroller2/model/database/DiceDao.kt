@@ -3,7 +3,6 @@ package com.example.diceroller2.model.database
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.diceroller2.model.Dice
 import com.example.diceroller2.model.database.entities.DiceEntity
 
 @Dao

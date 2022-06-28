@@ -13,8 +13,8 @@ class ModelFactory(
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when(modelClass){
-            DicePoolViewModel::class.java -> DicePoolViewModel(app.resources, app.switchColor ) as T
-            ChooseColorViewModel::class.java -> ChooseColorViewModel(app.colors, app.switchColor) as T
+            DicePoolViewModel::class.java -> DicePoolViewModel(app.switchColor ) as T
+            ChooseColorViewModel::class.java -> ChooseColorViewModel(app.switchColor) as T
             else -> throw IllegalArgumentException("unknown view model")
         }
     }

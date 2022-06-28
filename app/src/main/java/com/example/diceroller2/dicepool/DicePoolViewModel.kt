@@ -7,7 +7,6 @@ import com.example.diceroller2.R
 import com.example.diceroller2.model.*
 
 class DicePoolViewModel(
-    private val repository: DiceRepository,
     private val switchColor: SwitchColor
 ) : ViewModel() {
 
@@ -18,7 +17,6 @@ class DicePoolViewModel(
         _dicesLD.value = it
     }
 
-
     private val _colorSwitcher = MutableLiveData<SwitchColor>()
     val colorSwitcher: LiveData<SwitchColor> = _colorSwitcher
 
@@ -26,75 +24,67 @@ class DicePoolViewModel(
         _colorSwitcher.value = it
     }
 
-
-    fun onCreate(currentPack: String){
-        repository.addListener (diceListListener)
-        if (repository.getDices().isEmpty()) {
-            createStartDice(currentPack)
-        }
-        repository.changeDicePack(currentPack)
-
+    fun onCreate(currentPack: String) {
+        DiceRepository.addListener(diceListListener)
         switchColor.addListener(colorListener)
 
+        if (DiceRepository.getDices().isEmpty()) {
+            createStartDice()
+        }
+        DiceRepository.changeDicePack(currentPack)
     }
 
-    fun onDestroy(){
-        repository.removeListener(diceListListener)
-
+    fun onDestroy() {
+        DiceRepository.removeListener(diceListListener)
         switchColor.removeListener(colorListener)
     }
 
-    private fun createStartDice(currentPack: String){
-        DiceFactory.createDices(number = 6, color = R.color.teal_200, image = "$currentPack/6/1.png", grain = 6, pack = currentPack)
-            .forEach { repository.addDice(it) }
-        _dicesLD.value = repository.getDices()
+    private fun createStartDice() {
+        DiceFactory.createDices(number = 6)
+            .forEach { DiceRepository.addDice(it) }
+        _dicesLD.value = DiceRepository.getDices()
     }
 
-    fun rollDice(dice: Dice){
-        DiceActions.rollDice(dice, repository)
+    fun rollDice(dice: Dice) {
+        DiceActions.rollDice(dice)
     }
 
-    fun rollPreviousDices(dice: Dice){
-        DiceActions.rollAllPreviousDices(dice, repository)
+    fun rollPreviousDices(dice: Dice) {
+        DiceActions.rollAllPreviousDices(dice, DiceRepository)
     }
 
-    fun addDice(grain: Int, color: Int, image: String, currentPack: String){
-        val dice = DiceFactory.createDice(grain, color, image, currentPack)
-        repository.addDice(dice)
+    fun addDice(grain: Int, color: Int, currentPack: String) {
+        val dice = DiceFactory.createDice(grain, color, currentPack)
+        DiceRepository.addDice(dice)
     }
 
     fun changeColor(dice: Dice) {
-        // mock realisation
-        DiceActions.changeDiceColor(dice, colorSwitcher.value?.color ?: R.color.white, repository)
-
-
+        DiceActions.changeDiceColor(
+            dice,
+            colorSwitcher.value?.color ?: DiceFactory.DEFAULT_DICE_COLOR,
+        )
     }
 
-    fun startChangeColorRegime(){
-//        _colorSwitcher.value!!.switch = true
+    fun startChangeColorRegime() {
         switchColor.switch = true
     }
 
-    fun endChangeColorRegime(){
+    fun endChangeColorRegime() {
         switchColor.switch = false
     }
 
-    fun changeGrain(dice: Dice, newGrain: Int, currentPack: String){
-        DiceActions.changeGrain(dice, newGrain, repository, currentPack)
+    fun changeGrain(dice: Dice, newGrain: Int) {
+        DiceActions.changeGrain(dice, newGrain)
     }
 
-    fun changeAllGrainForAll(newGrain: Int, currentPack: String){
+    fun changeGrainForAllDices(newGrain: Int) {
         _dicesLD.value!!.forEach {
-            DiceActions.changeGrain(it, newGrain, repository, currentPack)
+            DiceActions.changeGrain(it, newGrain)
         }
     }
 
-    fun removeDice(dice: Dice){
-        repository.removeDice(dice)
+    fun removeDice(dice: Dice) {
+        DiceRepository.removeDice(dice)
     }
-
-//    fun changeImage(dice: Dice) {
-//        DiceActions.changeDiceImage(dice, R.drawable.ic_launcher_foreground, repository)
-//    }
 
 }

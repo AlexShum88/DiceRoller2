@@ -2,11 +2,8 @@ package com.example.diceroller2.model
 
 typealias DiceListListener = (dices: List<Dice>) -> Unit
 
-class DiceRepository{
+object DiceRepository{
 
-    //!!!!! huinia
-
-    //!!!!!
 
     private val dices = mutableListOf<Dice>()
 
@@ -33,7 +30,7 @@ class DiceRepository{
     fun changeDicePack(currentPack: String){
         dices.forEach {
             it.pack = currentPack
-            it.image = "${it.pack}/${it.grain}/${it.value}.png"
+            DiceActions.changeDiceImage(it)
         }
     }
 
@@ -52,15 +49,5 @@ class DiceRepository{
         }
     }
 
-    companion object {
-        val GRAINS = listOf<Int>(
-            2,
-            4,
-            6,
-            8,
-            10,
-            12,
-            20,
-        )
-    }
+
 }

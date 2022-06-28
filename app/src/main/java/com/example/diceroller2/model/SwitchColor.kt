@@ -13,26 +13,26 @@ class SwitchColor: Parcelable{
         get() = _color
         set(value) {
             _color = value
-            notfListeners()
+            notifyListeners()
         }
     private var _switch: Boolean = false
     var switch: Boolean
         get() = _switch
         set(value) {
             _switch = value
-            notfListeners()
+            notifyListeners()
         }
     val listeners = mutableSetOf<SwitchColorListener>()
 
     fun addListener(listener: SwitchColorListener){
         listeners.add(listener)
-        notfListeners()
+        notifyListeners()
     }
     fun removeListener(listener: SwitchColorListener){
         listeners.remove(listener)
     }
 
-    fun notfListeners(){
+    private fun notifyListeners(){
         listeners.forEach {
             it.invoke(this)
         }

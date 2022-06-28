@@ -12,7 +12,7 @@ class PresetViewModelFactory (
         ): ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when(modelClass){
-            PresetsViewModel::class.java -> PresetsViewModel(app.roomPresetRepository, app.resources) as T
+            PresetsViewModel::class.java -> PresetsViewModel(app.roomPresetRepository) as T
         else -> throw IllegalArgumentException()
         }
     }

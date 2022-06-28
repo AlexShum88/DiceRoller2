@@ -13,7 +13,6 @@ class StatisticViewModel : ViewModel() {
 
     fun create() {
         _statistic.value = DiceActions.stat.getStatistic()
-
     }
 
 
