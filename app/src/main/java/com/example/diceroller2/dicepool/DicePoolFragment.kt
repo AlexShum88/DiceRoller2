@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.diceroller2.MainActivity
 import com.example.diceroller2.R
@@ -122,9 +124,17 @@ class DicePoolFragment(
 //        binding.diceRecycler.layoutManager = LinearLayoutManager(requireContext())
 
         setLayoutManager()
+
+        setNavigationByBottomBar()
+
         return binding.root
     }
 
+    fun setNavigationByBottomBar(){
+        val navHost = requireActivity().supportFragmentManager.findFragmentById(R.id.fragment_container_view_tag) as NavHostFragment
+        val navController = navHost.navController
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
+    }
 
     fun setLayoutManager() {
 

@@ -20,4 +20,7 @@
     <string name="such_name_exist">Such preset exist. Please change name.</string>
     <string name="enter_preset_name">enter preset name, please</string>
     <string name="dismiss">Dismiss</string>
+    <string name="statistic">statistic</string>
+    <string name="dice_packs">dice packs</string>
+    <string name="presets">presets</string>
 </resources>
