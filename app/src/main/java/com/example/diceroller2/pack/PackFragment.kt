@@ -33,14 +33,15 @@ class PackFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentPackListBinding.inflate(inflater, container, false)
-        val adapter = PackAdapter(this, object : PackOnClickActions {
-            override fun changeCurrentPack(packName: String) {
+        val adapter by lazy {
+            PackAdapter(this)
+            {
                 preferences.edit()
-                    .putString(MainActivity.CURRENT_DICE_PACK, packName)
+                    .putString(MainActivity.CURRENT_DICE_PACK, it)
                     .apply()
                 requireActivity().onBackPressed()
             }
-        })
+        }
         adapter.packs = viewModel.packsName
         binding.list.adapter = adapter
         binding.list.layoutManager = LinearLayoutManager(requireContext())

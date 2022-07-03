@@ -19,8 +19,6 @@ import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import com.example.diceroller2.factory
 import com.example.diceroller2.model.Dice
-import com.example.diceroller2.model.DiceActions
-import com.example.diceroller2.model.DiceFactory
 import com.example.diceroller2.model.DiceRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -33,7 +31,7 @@ class DicePoolFragment(
     private val viewModel: DicePoolViewModel by viewModels { factory() }
 
 
-//    //dummy
+    //    //dummy
 //    val color = R.color.purple_200
 //    val image = "start/6/1.png"
 //    val grain = 6
@@ -44,12 +42,9 @@ class DicePoolFragment(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        preferences = this.requireActivity().getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
-        println("FFFF"+preferences.contains(MainActivity.CURRENT_DICE_PACK))
-
-
-
-
+        preferences = this.requireActivity()
+            .getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        println("FFFF" + preferences.contains(MainActivity.CURRENT_DICE_PACK))
     }
 
     override fun onCreateView(
@@ -57,7 +52,9 @@ class DicePoolFragment(
         savedInstanceState: Bundle?
     ): View {
 
-        currentPack = preferences.getString(MainActivity.CURRENT_DICE_PACK, "start") ?: "start"
+        currentPack =
+            preferences.getString(MainActivity.CURRENT_DICE_PACK, MainActivity.DEFAULT_DICE_PACK)
+                ?: MainActivity.DEFAULT_DICE_PACK
         viewModel.onCreate(currentPack)
 
         var colorSwitcher = false
@@ -99,12 +96,14 @@ class DicePoolFragment(
             }
         )
 
+
+
         binding = FragmentDicePoolBinding.inflate(inflater, container, false)
 
         binding.addButton.setOnClickListener {
             val color = DiceRepository.getDices().last().color
 
-                createGrainPopUpForAddDice(it, color, currentPack, viewModel::addDice)
+            createGrainPopUpForAddDice(it, color, currentPack, viewModel::addDice)
 //            findNavController().navigate(R.id.action_dicePoolFragment_to_statisticFragment)
 //            findNavController().navigate(R.id.action_dicePoolFragment_to_presetsFragment)
 //            findNavController().navigate(R.id.action_dicePoolFragment_to_packFragment)
@@ -130,8 +129,9 @@ class DicePoolFragment(
         return binding.root
     }
 
-    fun setNavigationByBottomBar(){
-        val navHost = requireActivity().supportFragmentManager.findFragmentById(R.id.fragment_container_view_tag) as NavHostFragment
+    fun setNavigationByBottomBar() {
+        val navHost =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.fragment_container_view_tag) as NavHostFragment
         val navController = navHost.navController
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
     }
@@ -157,27 +157,26 @@ class DicePoolFragment(
         viewModel.onDestroy()
     }
 
-    private fun setColorButton(button: FloatingActionButton){
-        button.setOnLongClickListener{
+    private fun setColorButton(button: FloatingActionButton) {
+        button.setOnLongClickListener {
             findNavController().navigate(R.id.action_dicePoolFragment_to_chooseColorFragment)
             return@setOnLongClickListener true
         }
 
         viewModel.colorSwitcher.observe(viewLifecycleOwner) {
 
-            button.backgroundTintList = ColorStateList.valueOf(binding.root.context.getColor(it.color))
+            button.backgroundTintList =
+                ColorStateList.valueOf(binding.root.context.getColor(it.color))
 
-            if (it.switch){
+            if (it.switch) {
                 button.setImageResource(R.drawable.paint_dice_icon)
-            }
-            else{
+            } else {
                 button.setImageResource(R.drawable.change_color_icon)
             }
-            button.setOnClickListener { _->
-                if(!it.switch) {
+            button.setOnClickListener { _ ->
+                if (!it.switch) {
                     viewModel.startChangeColorRegime()
-                }
-                else {
+                } else {
                     viewModel.endChangeColorRegime()
                 }
             }

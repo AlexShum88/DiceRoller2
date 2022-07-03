@@ -11,22 +11,16 @@ import com.example.diceroller2.databinding.PackLineBinding
 import com.example.diceroller2.model.DiceActions
 import com.example.diceroller2.model.DiceGrains
 
-interface PackOnClickActions{
-    fun changeCurrentPack(packName: String)
-}
 
 class PackAdapter(
     val fragment: PackFragment,
-    private val packOnClickActions: PackOnClickActions
+    val changeCurrentPack: (String)->Unit
 ) : RecyclerView.Adapter<PackAdapter.PackViewHolder>(), View.OnClickListener {
 
     inner class PackViewHolder(val binding: PackLineBinding) : RecyclerView.ViewHolder(binding.root)
 
     var packs = emptyList<String>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PackViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -69,7 +63,7 @@ class PackAdapter(
 
     override fun onClick(v: View) {
         val pack = v.tag as String
-        packOnClickActions.changeCurrentPack(pack)
+        changeCurrentPack(pack)
     }
 
     companion object {

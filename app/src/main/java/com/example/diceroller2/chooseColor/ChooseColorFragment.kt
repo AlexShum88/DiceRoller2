@@ -13,8 +13,6 @@ import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentChooseColorBinding
 import com.example.diceroller2.factory
 
-import com.example.diceroller2.model.DColor
-
 class ChooseColorFragment : Fragment(R.layout.fragment_choose_color) {
 
 
@@ -34,13 +32,7 @@ class ChooseColorFragment : Fragment(R.layout.fragment_choose_color) {
 
         binding = FragmentChooseColorBinding.inflate(inflater, container, false)
         binding.colorDoneButton.setOnClickListener { findNavController().navigateUp() }
-        val adapter = AdapterColor(
-            object : ColorActionListener {
-                override fun changeFocus(dColor: DColor) {
-                    viewModel.chooseColor(dColor)
-                }
-            }
-        )
+        val adapter by lazy { AdapterColor(viewModel::chooseColor) }
         viewModel.colors.observe(viewLifecycleOwner) {
             adapter.dColors = it
         }

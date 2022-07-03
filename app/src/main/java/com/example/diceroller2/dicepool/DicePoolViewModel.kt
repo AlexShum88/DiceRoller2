@@ -3,7 +3,6 @@ package com.example.diceroller2.dicepool
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.diceroller2.R
 import com.example.diceroller2.model.*
 
 class DicePoolViewModel(
@@ -54,7 +53,7 @@ class DicePoolViewModel(
     }
 
     fun addDice(grain: Int, color: Int, currentPack: String) {
-        val dice = DiceFactory.createDice(grain, color, currentPack)
+        val dice = DiceFactory.createDice(grain = grain, color = color, pack = currentPack)
         DiceRepository.addDice(dice)
     }
 

@@ -4,19 +4,18 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.DialogPresetChangeNameBinding
 import com.example.diceroller2.databinding.FragmentPresetsBinding
-import com.example.diceroller2.model.Dice
 import com.example.diceroller2.model.DiceRepository
-import com.example.diceroller2.model.database.entities.PresetEntity
 
 class PresetsFragment : Fragment() {
 
@@ -27,24 +26,16 @@ class PresetsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentPresetsBinding.inflate(inflater, container, false)
-        val adapter = PresetAdapter(
-            object : PresetActions {
-                override fun setNewPresetName(preset: PresetEntity) {
-                    viewModel.changePresetName(preset)
-
-                }
-
-                override fun addPreset(dices: List<Dice>) {
-                    viewModel.presetSetDicesToDiceRepository(dices)
-                    requireActivity().onBackPressed()
-                }
-
-                override fun deletePreset(preset: PresetEntity) {
-                    viewModel.deletePreset(preset)
-                }
-
-            }
-        )
+        val adapter by lazy {
+            PresetAdapter(
+                viewModel::changePresetName,
+                {
+                    viewModel::presetSetDicesToDiceRepository
+                    findNavController().popBackStack()
+                },
+                viewModel::deletePreset
+            )
+        }
         viewModel.presetsList.observe(viewLifecycleOwner) {
             adapter.listOfPresets = it
         }

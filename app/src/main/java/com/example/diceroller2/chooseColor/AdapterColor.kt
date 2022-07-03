@@ -9,8 +9,8 @@ import com.example.diceroller2.databinding.ColorViewBinding
 import com.example.diceroller2.model.DColor
 
 class AdapterColor(
-    private val actionListener: ColorActionListener
-
+//    private val actionListener: ColorActionListener
+val changeFocus: (DColor) -> Unit
 ) : RecyclerView.Adapter<AdapterColor.ColorHolder>(), View.OnClickListener {
 
     inner class ColorHolder(val binding: ColorViewBinding) : RecyclerView.ViewHolder(binding.root)
@@ -39,7 +39,7 @@ class AdapterColor(
     override fun getItemCount(): Int = dColors.size
 
     override fun onClick(colorView: View) {
-        actionListener.changeFocus(colorView.tag as DColor)
+        changeFocus(colorView.tag as DColor)
     }
 
 }

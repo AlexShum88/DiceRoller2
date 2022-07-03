@@ -77,7 +77,7 @@ class DiceAdapter(
         return true
     }
 
-    companion object{
+    companion object {
         const val MAX_ALPHA = 1F
         const val MIN_ALPHA = 0.6F
     }

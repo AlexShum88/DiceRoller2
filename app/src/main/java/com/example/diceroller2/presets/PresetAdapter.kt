@@ -16,17 +16,13 @@ import com.example.diceroller2.R
 import com.example.diceroller2.databinding.DialogPresetChangeNameBinding
 import com.example.diceroller2.databinding.PresetLineBinding
 import com.example.diceroller2.model.Dice
-import com.example.diceroller2.model.DiceRepository
 import com.example.diceroller2.model.database.entities.PresetEntity
 
-interface PresetActions {
-    fun setNewPresetName(preset: PresetEntity)
-    fun addPreset(dices: List<Dice>)
-    fun deletePreset(preset: PresetEntity)
-}
 
 class PresetAdapter(
-    private val presetSaveActions: PresetActions
+    val setNewPresetName: (PresetEntity)-> Unit,
+    val addPreset: (List<Dice>)->Unit,
+    val deletePreset: (PresetEntity)-> Unit
 ) : RecyclerView.Adapter<PresetAdapter.PresetViewHolder>(), View.OnClickListener {
 
     class PresetViewHolder(val binding: PresetLineBinding) :
@@ -92,10 +88,10 @@ class PresetAdapter(
     override fun onClick(v: View) {
         when (v.tag) {
             is List<*> -> {
-                presetSaveActions.addPreset(v.tag as List<Dice>)
+                addPreset(v.tag as List<Dice>)
             }
             is PresetEntity -> {
-                presetSaveActions.deletePreset(v.tag as PresetEntity)
+                deletePreset(v.tag as PresetEntity)
             }
         }
 
@@ -126,7 +122,7 @@ class PresetAdapter(
 
                 if (!listOfExistPresets.contains(name)) {
                     preset.name = view.dialogEditText.text.toString()
-                    presetSaveActions.setNewPresetName(preset)
+                    setNewPresetName(preset)
                 } else {
                     view.dialogEditText.error = context.getString(R.string.such_name_exist)
                     return@setOnClickListener
