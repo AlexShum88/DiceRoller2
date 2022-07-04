@@ -8,21 +8,30 @@ import com.example.diceroller2.chooseColor.ChooseColorFragment
 import com.example.diceroller2.dicepool.DicePoolFragment
 import com.example.diceroller2.pack.PackFragment
 import com.example.diceroller2.presets.PresetsFragment
+import com.example.diceroller2.statistic.StatisticAdapter
 import com.example.diceroller2.statistic.StatisticFragment
 
-class TabAdapter(fragment: FragmentActivity, val pager: ViewPager2) : FragmentStateAdapter(fragment) {
+class TabAdapter(fragment: FragmentActivity, private val pager: ViewPager2) : FragmentStateAdapter(fragment) {
 
 
     override fun getItemCount(): Int = 5
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            0->{PackFragment(pager)}
-            1->{PresetsFragment(pager)}
-            2->{DicePoolFragment()}
-            3->{ChooseColorFragment(pager)}
-            4->{StatisticFragment()}
+            POSITION_OF_PACK->{PackFragment(pager)}
+            POSITION_OF_PRESETS->{PresetsFragment(pager)}
+            POSITION_OF_DICE_POOL->{DicePoolFragment()}
+            POSITION_OF_CHOOSE_COLOR->{ChooseColorFragment(pager)}
+            POSITION_OF_STATISTIC->{StatisticFragment()}
             else -> { DicePoolFragment()}
         }
+    }
+
+    companion object{
+        const val POSITION_OF_PACK = 0
+        const val POSITION_OF_PRESETS = 1
+        const val POSITION_OF_DICE_POOL = 2
+        const val POSITION_OF_CHOOSE_COLOR = 3
+        const val POSITION_OF_STATISTIC = 4
     }
 }

@@ -16,15 +16,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.diceroller2.MainActivity
 import com.example.diceroller2.R
+import com.example.diceroller2.TabAdapter
 import com.example.diceroller2.databinding.DialogPresetChangeNameBinding
 import com.example.diceroller2.databinding.FragmentPresetsBinding
 import com.example.diceroller2.model.DiceRepository
 
 class PresetsFragment(val pager: ViewPager2) : Fragment() {
 
+    private lateinit var binding: FragmentPresetsBinding
     private val viewModel: PresetsViewModel by viewModels { presetFactory() }
-    lateinit var preferences: SharedPreferences
-    lateinit var currentPack: String
+    private lateinit var preferences: SharedPreferences
+    private lateinit var currentPack: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         preferences = this.requireActivity()
@@ -35,38 +37,28 @@ class PresetsFragment(val pager: ViewPager2) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentPresetsBinding.inflate(inflater, container, false)
+        binding = FragmentPresetsBinding.inflate(inflater, container, false)
         val adapter by lazy {
             PresetAdapter(
                 viewModel::changePresetName,
                 {
-
-                    currentPack =
-                        preferences.getString(MainActivity.CURRENT_DICE_PACK, MainActivity.DEFAULT_DICE_PACK)
-                            ?: MainActivity.DEFAULT_DICE_PACK
-
+                    setCurrentPack()
                     viewModel.presetSetDicesToDiceRepository(it, currentPack)
-//                    findNavController().popBackStack()
-                    pager.setCurrentItem(2, false) //bad
+                    pager.setCurrentItem(TabAdapter.POSITION_OF_DICE_POOL, false) //bad
                 },
                 viewModel::deletePreset
             )
         }
+        var names: List<String> = emptyList()
         viewModel.presetsList.observe(viewLifecycleOwner) {
             adapter.listOfPresets = it
         }
-
-        binding.presetRecycle.adapter = adapter
-        binding.presetRecycle.layoutManager = LinearLayoutManager(requireContext())
-
-        var names: List<String> = emptyList()
         viewModel.presetNames.observe(viewLifecycleOwner) {
             names = it
         }
-
-        binding.addPresetButton.setOnClickListener {
-            setPresetDialog(requireContext(), names)
-        }
+        addPresetButton(names)
+        binding.presetRecycle.adapter = adapter
+        binding.presetRecycle.layoutManager = LinearLayoutManager(requireContext())
         return binding.root
     }
 
@@ -104,6 +96,18 @@ class PresetsFragment(val pager: ViewPager2) : Fragment() {
 
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         dialog.show()
+    }
+
+    private fun setCurrentPack(){
+        currentPack =
+            preferences.getString(MainActivity.CURRENT_DICE_PACK, MainActivity.DEFAULT_DICE_PACK)
+                ?: MainActivity.DEFAULT_DICE_PACK
+    }
+
+    private fun addPresetButton(names: List<String>){
+        binding.addPresetButton.setOnClickListener {
+            setPresetDialog(requireContext(), names)
+        }
     }
 
 }
