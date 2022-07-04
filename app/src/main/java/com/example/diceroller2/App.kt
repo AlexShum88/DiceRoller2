@@ -10,6 +10,8 @@ import com.example.diceroller2.model.databaseRepository.RoomPresetRepository
 
 class App: Application() {
     val switchColor = SwitchColor()
+    val diceRepository = DiceRepository
+    val colorRepository  = ColorsRepository
     val database by lazy { AppDatabase.getDataBase(applicationContext)}
     val roomPresetRepository by lazy {   RoomPresetRepository(database.getPresetDao(), database.getDiceDao())}
 }
