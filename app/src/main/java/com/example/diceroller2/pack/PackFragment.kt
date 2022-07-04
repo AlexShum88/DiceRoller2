@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.diceroller2.MainActivity
 import com.example.diceroller2.databinding.FragmentPackListBinding
+import com.example.diceroller2.model.DiceRepository
 
-class PackFragment : Fragment() {
+class PackFragment(val pager: ViewPager2) : Fragment() {
 
 
     val viewModel: PackViewModel by viewModels()
@@ -39,7 +41,10 @@ class PackFragment : Fragment() {
                 preferences.edit()
                     .putString(MainActivity.CURRENT_DICE_PACK, it)
                     .apply()
-                requireActivity().onBackPressed()
+                DiceRepository.changeDicePack(it)
+                pager.setCurrentItem(2, false)
+
+//                requireActivity().onBackPressed()
             }
         }
         adapter.packs = viewModel.packsName

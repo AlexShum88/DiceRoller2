@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentChooseColorBinding
 import com.example.diceroller2.factory
 
-class ChooseColorFragment : Fragment(R.layout.fragment_choose_color) {
+class ChooseColorFragment(val pager: ViewPager2) : Fragment(R.layout.fragment_choose_color) {
 
 
     private lateinit var binding: FragmentChooseColorBinding
@@ -31,13 +32,25 @@ class ChooseColorFragment : Fragment(R.layout.fragment_choose_color) {
     ): View {
 
         binding = FragmentChooseColorBinding.inflate(inflater, container, false)
-        binding.colorDoneButton.setOnClickListener { findNavController().navigateUp() }
-        val adapter by lazy { AdapterColor(viewModel::chooseColor) }
+//        binding.colorDoneButton.setOnClickListener { findNavController().navigateUp() }
+        val adapter by lazy {
+            AdapterColor {
+                viewModel.chooseColor(it)
+                pager.setCurrentItem(2, true)
+            }
+        }
         viewModel.colors.observe(viewLifecycleOwner) {
             adapter.dColors = it
         }
         binding.colorRecycler.adapter = adapter
-        setLayoutManager()
+//        setLayoutManager()
+        binding.colorRecycler.layoutManager = LinearLayoutManager(requireContext())
+//        GridLayoutManager(
+//            requireContext(),
+//            2,
+//            RecyclerView.VERTICAL,
+//            false
+//        ).also { binding.colorRecycler.layoutManager = it }
         return binding.root
     }
 

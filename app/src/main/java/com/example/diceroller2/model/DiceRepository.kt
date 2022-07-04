@@ -17,6 +17,7 @@ object DiceRepository{
     fun addDicesFromPreset(dices: List<Dice>){
         this.dices.clear()
         dices.forEach { this.dices.add(it) }
+        notifyListeners()
     }
 
 
@@ -32,6 +33,7 @@ object DiceRepository{
             it.pack = currentPack
             DiceActions.changeDiceImage(it)
         }
+        notifyListeners()
     }
 
     fun addListener(listener: DiceListListener){

@@ -3,7 +3,7 @@ package com.example.diceroller2.model
 typealias DColorsListener = (colors: List<DColor>) -> Unit
 
 object ColorsRepository {
-
+//    var colorSwitcher = true
     private val colors = ColorList.colors
 
     private val listeners = mutableSetOf<DColorsListener>()

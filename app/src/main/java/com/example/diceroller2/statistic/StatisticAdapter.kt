@@ -20,6 +20,7 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
     var list = emptyList<StatisticObject>()
         set(value) {
             field = value.reversed()
+            notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatisticViewHolder {

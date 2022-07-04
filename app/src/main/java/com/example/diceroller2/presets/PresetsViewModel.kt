@@ -29,8 +29,9 @@ class PresetsViewModel(
         println("dices from DB name ${dss}")
     }
 
-    fun presetSetDicesToDiceRepository(dices:List<Dice>){
+    fun presetSetDicesToDiceRepository(dices:List<Dice>, currentPack: String){
         DiceRepository.addDicesFromPreset(dices)
+        DiceRepository.changeDicePack(currentPack)
     }
 
     fun deletePreset(preset: PresetEntity) = viewModelScope.launch {

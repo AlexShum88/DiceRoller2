@@ -6,8 +6,8 @@ import kotlinx.parcelize.Parcelize
 
 typealias SwitchColorListener = (switchColor: SwitchColor) -> Unit
 
-@Parcelize
-class SwitchColor: Parcelable{
+
+class SwitchColor{
     private var _color: Int = R.color.purple_500
     var color: Int
         get() = _color

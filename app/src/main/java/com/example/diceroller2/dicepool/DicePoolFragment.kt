@@ -18,8 +18,10 @@ import com.example.diceroller2.MainActivity
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import com.example.diceroller2.factory
+import com.example.diceroller2.model.ColorsRepository
 import com.example.diceroller2.model.Dice
 import com.example.diceroller2.model.DiceRepository
+import com.example.diceroller2.model.SwitchColor
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DicePoolFragment(
@@ -29,7 +31,7 @@ class DicePoolFragment(
     lateinit var binding: FragmentDicePoolBinding
 
     private val viewModel: DicePoolViewModel by viewModels { factory() }
-
+    var switchColor: Int = 0
 
     //    //dummy
 //    val color = R.color.purple_200
@@ -61,6 +63,7 @@ class DicePoolFragment(
 
         viewModel.colorSwitcher.observe(viewLifecycleOwner) {
             colorSwitcher = it.switch
+            switchColor = it.color
         }
 
         val adapter = DiceAdapter(this,
@@ -101,9 +104,11 @@ class DicePoolFragment(
         binding = FragmentDicePoolBinding.inflate(inflater, container, false)
 
         binding.addButton.setOnClickListener {
-            val color = DiceRepository.getDices().last().color
+            currentPack =
+                preferences.getString(MainActivity.CURRENT_DICE_PACK, MainActivity.DEFAULT_DICE_PACK)
+                    ?: MainActivity.DEFAULT_DICE_PACK
 
-            createGrainPopUpForAddDice(it, color, currentPack, viewModel::addDice)
+            createGrainPopUpForAddDice(it, switchColor, currentPack, viewModel::addDice)
 //            findNavController().navigate(R.id.action_dicePoolFragment_to_statisticFragment)
 //            findNavController().navigate(R.id.action_dicePoolFragment_to_presetsFragment)
 //            findNavController().navigate(R.id.action_dicePoolFragment_to_packFragment)
@@ -124,17 +129,16 @@ class DicePoolFragment(
 
         setLayoutManager()
 
-        setNavigationByBottomBar()
+//        setNavigationByBottomBar()
 
         return binding.root
     }
 
-    fun setNavigationByBottomBar() {
-        val navHost =
-            requireActivity().supportFragmentManager.findFragmentById(R.id.fragment_container_view_tag) as NavHostFragment
-        val navController = navHost.navController
-        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
-    }
+//    fun setNavigationByBottomBar() {
+//        val navHost = requireActivity().supportFragmentManager.findFragmentById(R.id.fragment_container_view_tag) as NavHostFragment
+//        val navController = navHost.navController
+//        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
+//    }
 
     fun setLayoutManager() {
 
@@ -158,10 +162,10 @@ class DicePoolFragment(
     }
 
     private fun setColorButton(button: FloatingActionButton) {
-        button.setOnLongClickListener {
-            findNavController().navigate(R.id.action_dicePoolFragment_to_chooseColorFragment)
-            return@setOnLongClickListener true
-        }
+//        button.setOnLongClickListener {
+//            findNavController().navigate(R.id.action_dicePoolFragment_to_chooseColorFragment)
+//            return@setOnLongClickListener true
+//        }
 
         viewModel.colorSwitcher.observe(viewLifecycleOwner) {
 
