@@ -11,17 +11,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.diceroller2.R
+import com.example.diceroller2.TabAdapter
 import com.example.diceroller2.databinding.FragmentChooseColorBinding
 import com.example.diceroller2.factory
 
-class ChooseColorFragment(val pager: ViewPager2) : Fragment(R.layout.fragment_choose_color) {
+class ChooseColorFragment() :
+    Fragment(R.layout.fragment_choose_color) {
 
-
+    lateinit var pager: ViewPager2
     private lateinit var binding: FragmentChooseColorBinding
     private val viewModel: ChooseColorViewModel by viewModels { factory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         viewModel.onCreate()
     }
@@ -30,27 +31,19 @@ class ChooseColorFragment(val pager: ViewPager2) : Fragment(R.layout.fragment_ch
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentChooseColorBinding.inflate(inflater, container, false)
-//        binding.colorDoneButton.setOnClickListener { findNavController().navigateUp() }
         val adapter by lazy {
             AdapterColor {
                 viewModel.chooseColor(it)
-                pager.setCurrentItem(2, true)
+                pager.setCurrentItem(TabAdapter.POSITION_OF_DICE_POOL, true)
             }
         }
         viewModel.colors.observe(viewLifecycleOwner) {
             adapter.dColors = it
         }
         binding.colorRecycler.adapter = adapter
-//        setLayoutManager()
         binding.colorRecycler.layoutManager = LinearLayoutManager(requireContext())
-//        GridLayoutManager(
-//            requireContext(),
-//            2,
-//            RecyclerView.VERTICAL,
-//            false
-//        ).also { binding.colorRecycler.layoutManager = it }
+        pager = requireActivity().findViewById(R.id.pager)
         return binding.root
     }
 
@@ -62,7 +55,7 @@ class ChooseColorFragment(val pager: ViewPager2) : Fragment(R.layout.fragment_ch
 
 
     private fun setLayoutManager() {
-
+//dynamic grid layout. dont create layout while dont roll dice (((
         binding.colorRecycler.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {

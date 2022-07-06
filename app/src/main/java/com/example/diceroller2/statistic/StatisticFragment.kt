@@ -23,8 +23,8 @@ class StatisticFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val adapter = StatisticAdapter()
-        val binding = FragmentStatisticBinding.inflate(inflater,container,false)
-        viewModel.statistic.observe(viewLifecycleOwner){
+        val binding = FragmentStatisticBinding.inflate(inflater, container, false)
+        viewModel.statistic.observe(viewLifecycleOwner) {
             adapter.list = it
         }
         binding.statisticRecycle.adapter = adapter
@@ -36,7 +36,6 @@ class StatisticFragment : Fragment() {
         super.onDestroy()
         viewModel.destroy()
     }
-
 
 
 }
