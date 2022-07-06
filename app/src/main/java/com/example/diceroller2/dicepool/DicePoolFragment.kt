@@ -17,6 +17,7 @@ import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import com.example.diceroller2.factory
 import com.example.diceroller2.model.Dice
+import com.example.diceroller2.model.RollRegime
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DicePoolFragment(
@@ -56,7 +57,12 @@ class DicePoolFragment(
                     if (colorSwitcher) {
                         viewModel.changeColor(dice)
                     } else {
-                        viewModel.rollPreviousDices(dice)
+                        if (RollRegime.rollAllPrevDIcesRegime){
+                            viewModel.rollPreviousDices(dice)
+                        }
+                        else {
+                            viewModel.rollDice(dice)
+                        }
                     }
                 }
 
@@ -88,6 +94,7 @@ class DicePoolFragment(
         binding.diceRecycler.adapter = adapter
         setAddButton(binding.addButton)
         setColorButton(binding.colorButton)
+        setChangeRollButton(binding.diceRollRegime)
 
 //        binding.diceRecycler.layoutManager = LinearLayoutManager(requireContext())
         setLayoutManager()
@@ -143,6 +150,15 @@ class DicePoolFragment(
         button.setOnClickListener {
             setCurrentPack()
             createGrainPopUpForAddDice(it, switchColor, currentPack, viewModel::addDice)
+        }
+    }
+
+    private fun setChangeRollButton(button: FloatingActionButton){
+        button.setOnClickListener{
+            RollRegime.changeRollRegime()
+            if (RollRegime.rollAllPrevDIcesRegime) button.setImageResource(R.drawable.all_previos_dices)
+            else button.setImageResource(R.drawable.one_dice)
+
         }
     }
 
