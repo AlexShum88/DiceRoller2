@@ -49,7 +49,7 @@ class DicePoolViewModel(
     }
 
     fun rollPreviousDices(dice: Dice) {
-        DiceActions.rollAllPreviousDices(dice, DiceRepository)
+        DiceActions.rollAllPreviousDices(dice)
     }
 
     fun addDice(grain: Int, color: Int, currentPack: String) {

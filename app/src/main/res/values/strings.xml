@@ -24,4 +24,5 @@
     <string name="dice_packs">Dice packs</string>
     <string name="presets">Presets</string>
     <string name="pack">Packs</string>
+    <string name="dice_roll_regime">Dice roll regime</string>
 </resources>

@@ -3,28 +3,32 @@ package com.example.diceroller2.model
 import kotlin.random.Random
 
 
-
-
-
 object DiceActions {
 
     const val IMAGE_RES = ".png"
     val stat = Statistic
 
     fun rollDice(dice: Dice) {
+        val dicesForStat = mutableListOf<Dice>()
+        dicesForStat.add(innerRollDice(dice).copy())
+        stat.thenDicesRoll(dicesForStat)
+    }
+
+    private fun innerRollDice(dice: Dice): Dice {
         val grain = dice.grain
         val diceR = findDice(dice)
         diceR.value = Random(System.nanoTime()).nextInt(1, grain + 1)
         changeDiceImage(diceR)
         notifyRepositoryListeners()
+        return diceR
     }
 
     fun changeDiceImage(dice: Dice) {
         dice.image = "${dice.pack}/${dice.grain}/${dice.value}$IMAGE_RES"
     }
 
-    fun rollAllPreviousDices(dice: Dice, repository: DiceRepository) {
-        val dices = repository.getDices()
+    fun rollAllPreviousDices(dice: Dice) {
+        val dices = DiceRepository.getDices()
         val index = dices.indexOfFirst { it === dice }
         if (index < 0) return
         val dicesForStat = mutableListOf<Dice>()
@@ -33,7 +37,7 @@ object DiceActions {
             dicesForStat.add(dices[it].copy())
         }
         stat.thenDicesRoll(dicesForStat)
-        noActiveDicesToDefault(index, dices)
+//        noActiveDicesToDefault(index, dices)
     }
 
     private fun noActiveDicesToDefault(index: Int, dices: List<Dice>) {

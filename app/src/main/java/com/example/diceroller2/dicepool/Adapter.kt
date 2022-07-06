@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diceroller2.databinding.DiceBinding
 import com.example.diceroller2.model.Dice
+import com.example.diceroller2.model.RollRegime
 
 class DiceAdapter(
     private val fragment: DicePoolFragment,
@@ -46,13 +47,20 @@ class DiceAdapter(
 
             diceImage.setImageDrawable(d)
             diceImage.setBackgroundColor(fragment.requireContext().getColor(dice.color))
-            if (divider >= 0) {
-                if (position <= divider) {
-                    root.alpha = MAX_ALPHA
-                } else {
-                    root.alpha = MIN_ALPHA
+            if(RollRegime.rollAllPrevDIcesRegime){
+                if (divider >= 0) {
+                    if (position <= divider) {
+                        root.alpha = MAX_ALPHA
+                    } else {
+                        root.alpha = MIN_ALPHA
+                    }
                 }
             }
+            else {
+                if (position==divider || divider<0) root.alpha = MAX_ALPHA
+                else root.alpha = MIN_ALPHA
+            }
+
 //            DrawableCompat.setTint(diceImage.drawable, ContextCompat.getColor(fragment.requireContext(), dice.color))
 
         }
