@@ -11,13 +11,14 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.diceroller2.MainActivity
+import com.example.diceroller2.R
 import com.example.diceroller2.TabAdapter
 import com.example.diceroller2.databinding.FragmentPackListBinding
 import com.example.diceroller2.model.DiceRepository
 
-class PackFragment(val pager: ViewPager2) : Fragment() {
+class PackFragment() : Fragment() {
 
-
+    lateinit var pager: ViewPager2
     val viewModel: PackViewModel by viewModels()
     lateinit var preferences: SharedPreferences
 
@@ -45,6 +46,7 @@ class PackFragment(val pager: ViewPager2) : Fragment() {
         adapter.packs = viewModel.packsName
         binding.list.adapter = adapter
         binding.list.layoutManager = LinearLayoutManager(requireContext())
+        pager = requireActivity().findViewById(R.id.pager)
         return binding.root
     }
 

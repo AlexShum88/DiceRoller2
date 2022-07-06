@@ -34,7 +34,7 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
         holder.binding.dateTextView.text = item.date
         val statistic = createStatText(item.dices)
         val context = holder.itemView.context
-
+//todo in all adapters take fun from bind
         holder.binding.layoutForDices.allViews
             .filter { it.tag == TAG_DICE_VIEW }
             .toList()
@@ -50,13 +50,15 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
                 context.resources.getDimension(R.dimen.text_size_in_generated_view_big) / TEXT_SIZE_CORRECTION_DIVIDER
             grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
 
-            grain.text = context.getString(R.string.statistic_grain_text, item.dices.size, it.grain)
+            grain.text =
+                context.getString(R.string.statistic_grain_text, it.numOfDicesOfGrain, it.grain)
             holder.binding.layoutForDices.addView(grain)
 
             val colorsRow = it.colorsAndResults
             colorsRow.forEach { a ->
                 val colorRow = TextView(holder.itemView.context)
                 colorRow.tag = TAG_DICE_VIEW
+                colorRow.setPadding(context.resources.getDimension(R.dimen.text_margin).toInt(), 0,0,0)
                 colorRow.textSize =
                     context.resources.getDimension(R.dimen.text_size_in_generated_view) / TEXT_SIZE_CORRECTION_DIVIDER
                 colorRow.setTextColor(ContextCompat.getColor(holder.itemView.context, a.key))
@@ -109,17 +111,20 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
         val statTextList = mutableListOf<StatTextObj>()
         val grainSort = sortByGrain(dices)
         grainSort.forEach {
-            val statText = StatTextObj()
-            statText.grain = it.key.toString()
-            statText.colorsAndResults = sortByColor(it.value).mapValues { a -> result(a.value) }
+            val statText = StatTextObj(
+                grain = it.key.toString(),
+                numOfDicesOfGrain = it.value.size,
+                colorsAndResults = sortByColor(it.value).mapValues { a -> result(a.value) }
+            )
             statTextList.add(statText)
         }
         return statTextList
     }
 
-    private class StatTextObj(
-        var grain: String = "",
-        var colorsAndResults: Map<Int, String> = emptyMap(),
+    private data class StatTextObj(
+        val grain: String,
+        val numOfDicesOfGrain: Int,
+        val colorsAndResults: Map<Int, String>,
     )
 
     companion object {

@@ -11,6 +11,7 @@ import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.diceroller2.MainActivity
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentDicePoolBinding
@@ -32,6 +33,8 @@ class DicePoolFragment(
         super.onCreate(savedInstanceState)
         preferences = this.requireActivity()
             .getSharedPreferences(MainActivity.APP_PREFERENCES, Context.MODE_PRIVATE)
+        setCurrentPack()
+        viewModel.onCreate(currentPack)
     }
 
     override fun onCreateView(
@@ -98,7 +101,7 @@ class DicePoolFragment(
             override fun onGlobalLayout() {
                 binding.diceRecycler.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 val width = binding.diceRecycler.width
-                val itemWidth = resources.getDimensionPixelSize(R.dimen.dice_size)
+                val itemWidth = resources.getDimensionPixelSize(R.dimen.dice_size) + resources.getDimensionPixelSize(R.dimen.dice_margin)
                 val columns = width / itemWidth
                 binding.diceRecycler.layoutManager = GridLayoutManager(requireContext(), columns)
             }

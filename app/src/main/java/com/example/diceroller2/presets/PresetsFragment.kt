@@ -21,8 +21,10 @@ import com.example.diceroller2.databinding.DialogPresetChangeNameBinding
 import com.example.diceroller2.databinding.FragmentPresetsBinding
 import com.example.diceroller2.model.DiceRepository
 
-class PresetsFragment(val pager: ViewPager2) : Fragment() {
+class PresetsFragment() : Fragment() {
 
+
+    lateinit var pager: ViewPager2
     private lateinit var binding: FragmentPresetsBinding
     private val viewModel: PresetsViewModel by viewModels { presetFactory() }
     private lateinit var preferences: SharedPreferences
@@ -59,6 +61,8 @@ class PresetsFragment(val pager: ViewPager2) : Fragment() {
         addPresetButton(names)
         binding.presetRecycle.adapter = adapter
         binding.presetRecycle.layoutManager = LinearLayoutManager(requireContext())
+
+        pager = requireActivity().findViewById(R.id.pager)
         return binding.root
     }
 

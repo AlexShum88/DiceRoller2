@@ -15,9 +15,10 @@ import com.example.diceroller2.TabAdapter
 import com.example.diceroller2.databinding.FragmentChooseColorBinding
 import com.example.diceroller2.factory
 
-class ChooseColorFragment(private val pager: ViewPager2) :
+class ChooseColorFragment() :
     Fragment(R.layout.fragment_choose_color) {
 
+    lateinit var pager: ViewPager2
     private lateinit var binding: FragmentChooseColorBinding
     private val viewModel: ChooseColorViewModel by viewModels { factory() }
 
@@ -42,6 +43,7 @@ class ChooseColorFragment(private val pager: ViewPager2) :
         }
         binding.colorRecycler.adapter = adapter
         binding.colorRecycler.layoutManager = LinearLayoutManager(requireContext())
+        pager = requireActivity().findViewById(R.id.pager)
         return binding.root
     }
 

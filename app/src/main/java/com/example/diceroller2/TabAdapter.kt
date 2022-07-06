@@ -18,10 +18,10 @@ class TabAdapter(fragment: FragmentActivity, private val pager: ViewPager2) : Fr
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            POSITION_OF_PACK->{PackFragment(pager)}
-            POSITION_OF_PRESETS->{PresetsFragment(pager)}
+            POSITION_OF_PACK->{PackFragment()}
+            POSITION_OF_PRESETS->{PresetsFragment()}
             POSITION_OF_DICE_POOL->{DicePoolFragment()}
-            POSITION_OF_CHOOSE_COLOR->{ChooseColorFragment(pager)}
+            POSITION_OF_CHOOSE_COLOR->{ChooseColorFragment()}
             POSITION_OF_STATISTIC->{StatisticFragment()}
             else -> { DicePoolFragment()}
         }

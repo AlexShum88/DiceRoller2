@@ -54,7 +54,7 @@ class DiceAdapter(
                 }
             }
 //            DrawableCompat.setTint(diceImage.drawable, ContextCompat.getColor(fragment.requireContext(), dice.color))
-            diceValue.visibility = View.GONE
+
         }
     }
 
