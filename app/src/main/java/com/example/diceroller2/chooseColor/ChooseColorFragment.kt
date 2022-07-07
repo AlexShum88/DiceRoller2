@@ -50,7 +50,7 @@ class ChooseColorFragment() :
     override fun onDestroy() {
 
         super.onDestroy()
-        viewModel.onDestroy()
+//        viewModel.onDestroy()
     }
 
 

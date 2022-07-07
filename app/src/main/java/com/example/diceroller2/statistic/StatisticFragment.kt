@@ -34,7 +34,7 @@ class StatisticFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.destroy()
+//        viewModel.destroy()
     }
 
 

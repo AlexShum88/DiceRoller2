@@ -57,7 +57,7 @@ class DiceAdapter(
                 }
             }
             else {
-                if (position==divider || divider<0) root.alpha = MAX_ALPHA
+                if (position==divider || divider<0 || divider == dices.size) root.alpha = MAX_ALPHA
                 else root.alpha = MIN_ALPHA
             }
 

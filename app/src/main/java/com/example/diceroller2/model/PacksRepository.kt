@@ -4,5 +4,7 @@ object PacksRepository {
     val NAMES = listOf<String>(
         "start",
         "start - Copy",
+        "ink",
+        "fairy red"
     )
 }
