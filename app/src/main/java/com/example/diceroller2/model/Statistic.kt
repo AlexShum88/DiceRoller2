@@ -11,11 +11,6 @@ import java.util.*
 //typealias StatisticListener = (Map<String, List<Dice>>)->Unit
 typealias StatisticListener = (List<StatisticObject>)->Unit
 
-data class StatisticObject(
-    val date: String,
-    val dices: List<Dice>
-)
-
 object Statistic {
 
     private val listeners = mutableSetOf<StatisticListener>()

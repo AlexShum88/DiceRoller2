@@ -1,11 +1,12 @@
 package com.example.diceroller2.model
 
+import com.example.diceroller2.model.Dice.Companion.IMAGE_RES
 import kotlin.random.Random
 
 
 object DiceActions {
 
-    const val IMAGE_RES = ".png"
+//    const val IMAGE_RES = ".png"
     val stat = Statistic
 
     fun rollDice(dice: Dice) {

@@ -17,6 +17,7 @@ import com.example.diceroller2.databinding.DialogPresetChangeNameBinding
 import com.example.diceroller2.databinding.PresetLineBinding
 import com.example.diceroller2.model.Dice
 import com.example.diceroller2.model.database.entities.PresetEntity
+import com.example.diceroller2.pack.PackAdapter
 
 
 class PresetAdapter(
@@ -49,27 +50,7 @@ class PresetAdapter(
         val preset = presetWithDice.first
         val dices = presetWithDice.second
         val context = holder.itemView.context
-
-        var grainsViews = emptyList<Int>()
-        holder.binding.constraintPresetLine.allViews
-            .filter { it.tag == TAG_GRAIN_VIEW }
-            .toList()
-            .forEach {
-                holder.binding.constraintPresetLine.removeView(it)
-            }
-
-        grainsViews = dices.map {
-            val grain = TextView(holder.itemView.context)
-            grain.tag = TAG_GRAIN_VIEW
-            grain.textSize = context.resources.getDimension(R.dimen.text_size_in_generated_view) / TEXT_SIZE_CORRECTION_DIVIDER
-            grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
-            grain.text = context.getString(R.string.grain_menu_text, it.grain.toString())
-            grain.setTextColor(ContextCompat.getColor(context, it.color))
-            grain.id = ViewCompat.generateViewId()
-            holder.binding.constraintPresetLine.addView(grain)
-            grain.id
-        }
-
+        deletePreviousItemViews(holder)
         with(holder.binding) {
             addPresetToDesk.tag = dices
             deletePresetButton.tag = preset
@@ -77,9 +58,31 @@ class PresetAdapter(
             presetName.setOnClickListener{
                 changeNameDialog(holder.itemView.context, preset)
             }
-            mainFlow.referencedIds = grainsViews.toIntArray()
+            mainFlow.referencedIds = createGrainViews(holder, dices, context)
 
         }
+    }
+
+    private fun createGrainViews(holder: PresetViewHolder, dices: List<Dice>, context: Context): IntArray = dices.map {
+        val grain = TextView(holder.itemView.context)
+        grain.tag = TAG_GRAIN_VIEW
+        grain.textSize = context.resources.getDimension(R.dimen.text_size_in_generated_view) / TEXT_SIZE_CORRECTION_DIVIDER
+        grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
+        grain.text = context.getString(R.string.grain_menu_text, it.grain.toString())
+        grain.setTextColor(ContextCompat.getColor(context, it.color))
+        grain.id = ViewCompat.generateViewId()
+        holder.binding.constraintPresetLine.addView(grain)
+        grain.id
+    }.toIntArray()
+
+
+    private fun deletePreviousItemViews(holder: PresetViewHolder){
+        holder.binding.constraintPresetLine.allViews
+            .filter { it.tag == TAG_GRAIN_VIEW }
+            .toList()
+            .forEach {
+                holder.binding.constraintPresetLine.removeView(it)
+            }
     }
 
     override fun getItemCount(): Int = listOfPresets.size
@@ -87,12 +90,8 @@ class PresetAdapter(
 
     override fun onClick(v: View) {
         when (v.tag) {
-            is List<*> -> {
-                addPreset(v.tag as List<Dice>)
-            }
-            is PresetEntity -> {
-                deletePreset(v.tag as PresetEntity)
-            }
+            is List<*> -> addPreset(v.tag as List<Dice>)
+            is PresetEntity -> deletePreset(v.tag as PresetEntity)
         }
 
     }
