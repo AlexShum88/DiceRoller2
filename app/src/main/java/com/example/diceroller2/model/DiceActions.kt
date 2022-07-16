@@ -34,7 +34,7 @@ object DiceActions {
         if (index < 0) return
         val dicesForStat = mutableListOf<Dice>()
         (0..index).forEach {
-            rollDice(dices[it])
+            innerRollDice(dices[it])
             dicesForStat.add(dices[it].copy())
         }
         stat.thenDicesRoll(dicesForStat)

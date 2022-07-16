@@ -3,10 +3,8 @@ package com.example.diceroller2.presets
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -15,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.DialogPresetChangeNameBinding
 import com.example.diceroller2.databinding.PresetLineBinding
+import com.example.diceroller2.dicepool.PopUp
 import com.example.diceroller2.model.Dice
 import com.example.diceroller2.model.database.entities.PresetEntity
 import com.example.diceroller2.pack.PackAdapter
@@ -40,7 +39,7 @@ class PresetAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = PresetLineBinding.inflate(inflater, parent, false)
         binding.addPresetToDesk.setOnClickListener(this)
-        binding.deletePresetButton.setOnClickListener(this)
+        binding.deletePresetView.setOnClickListener(this)
         return PresetViewHolder(binding)
     }
 
@@ -53,7 +52,7 @@ class PresetAdapter(
         deletePreviousItemViews(holder)
         with(holder.binding) {
             addPresetToDesk.tag = dices
-            deletePresetButton.tag = preset
+            deletePresetView.tag = preset
             presetName.text = preset.name
             presetName.setOnClickListener{
                 changeNameDialog(holder.itemView.context, preset)
@@ -91,7 +90,7 @@ class PresetAdapter(
     override fun onClick(v: View) {
         when (v.tag) {
             is List<*> -> addPreset(v.tag as List<Dice>)
-            is PresetEntity -> deletePreset(v.tag as PresetEntity)
+            is PresetEntity -> createPresetPOP(v.context, v)
         }
 
     }
@@ -133,8 +132,27 @@ class PresetAdapter(
         dialog.show()
     }
 
+    private fun createPresetPOP(context: Context, view: View){
+        val popUp = PopupMenu(context, view)
+
+        popUp.menu.add(0, 1, Menu.NONE, R.string.delete)
+        popUp.setOnMenuItemClickListener {
+
+            when (it.itemId) {
+                DELETE_PRESET -> {
+                    deletePreset(view.tag as PresetEntity)
+                }
+
+            }
+            return@setOnMenuItemClickListener true
+        }
+        popUp.show()
+    }
+
     companion object{
         const val TAG_GRAIN_VIEW = "grainView"
         const val TEXT_SIZE_CORRECTION_DIVIDER = 4
+        const val DELETE_PRESET = 1
     }
+
 }
