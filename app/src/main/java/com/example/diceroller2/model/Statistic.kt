@@ -10,11 +10,14 @@ import java.util.*
 
 //typealias StatisticListener = (Map<String, List<Dice>>)->Unit
 typealias StatisticListener = (List<StatisticObject>)->Unit
+typealias TotalScoreListener = (Int)->Unit
 
 object Statistic {
 
     private val listeners = mutableSetOf<StatisticListener>()
+    private val listenersTotalScore = mutableSetOf<TotalScoreListener>()
     private val statistic = mutableListOf<StatisticObject>()
+    private var totalScore = 0
 
     fun getStatistic(): List<StatisticObject>{
         return statistic
@@ -23,6 +26,8 @@ object Statistic {
     fun thenDicesRoll(dices: List<Dice>){
         val date  = DateFormat.format("HH:mm:ss", Date().time).toString()
         statistic.add(StatisticObject(date, dices))
+        totalScore = dices.map { it.value }.reduce { acc, i ->  acc + i}
+        notifyTotalScoreListeners()
         notifyListeners()
     }
 
@@ -46,9 +51,25 @@ object Statistic {
         }
     }.buffer(Channel.CONFLATED)
 
-    fun notifyListeners(){
+    private fun notifyListeners(){
         listeners.forEach {
             it.invoke(statistic)
+        }
+    }
+    fun listenTotalScore():Flow<Int> = callbackFlow {
+        val listener: TotalScoreListener = {
+            trySend(it)
+        }
+        listenersTotalScore.add(listener)
+        listener.invoke(totalScore)
+        awaitClose {
+            listenersTotalScore.remove(listener)
+        }
+    }.buffer(Channel.CONFLATED)
+
+    private fun notifyTotalScoreListeners(){
+        listenersTotalScore.forEach {
+            it.invoke(totalScore)
         }
     }
 

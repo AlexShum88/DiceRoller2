@@ -26,4 +26,18 @@
     <string name="pack">Packs</string>
     <string name="dice_roll_regime">Dice roll regime</string>
     <string name="dice">dice</string>
+    <string name="help">Help</string>
+    <string name="pack_help">Here you can choose how you dices would looks like</string>
+    <string name="preset_help">Here you can choose or save dice pool</string>
+    <string name="dice_pool_help">
+        Its your current dice pool.
+        \n\nJust click dice to roll.
+        \n\nLeft button activate/deactivate change color of dice to selected color.
+        \n\nRight button add a new dice.
+        \n\nCentral button switches the throw mode: one dice or all.
+        \n\nLong click on dice to remove or change dice grain.
+    </string>
+    <string name="color_help">Here you can choose color to paint the dice.</string>
+    <string name="statistic_help">You roll history.</string>
+
 </resources>

@@ -25,6 +25,7 @@
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/drawable/change_color_icon.xml" value="0.1715" />
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/drawable/color_check.xml" value="0.1715" />
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/drawable/dice_pack.xml" value="0.1715" />
+        <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/drawable/help.xml" value="0.1715" />
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1715" />
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/drawable/one_dice.xml" value="0.1715" />
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/drawable/paint_dice_icon.xml" value="0.1715" />
@@ -46,6 +47,7 @@
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/layout/pack_line.xml" value="0.25769927536231885" />
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/layout/preset_line.xml" value="0.4" />
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/layout/statistic_line.xml" value="0.25769927536231885" />
+        <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/menu/action_bar_menu.xml" value="0.4" />
         <entry key="..\:/Users/Elanor/StudioProjects/DiceRoller2/app/src/main/res/menu/tabs_menu.xml" value="0.259375" />
       </map>
     </option>
