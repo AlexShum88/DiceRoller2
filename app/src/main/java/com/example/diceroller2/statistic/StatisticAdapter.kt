@@ -1,5 +1,6 @@
 package com.example.diceroller2.statistic
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,42 +35,52 @@ class StatisticAdapter : RecyclerView.Adapter<StatisticAdapter.StatisticViewHold
         holder.binding.dateTextView.text = item.date
         val statistic = createStatText(item.dices)
         val context = holder.itemView.context
-//todo in all adapters take fun from bind
+        deletePreviousViews(holder)
+
+        statistic.forEach {
+
+            setGrainView(it, holder, context)
+
+            setColorView(it, holder, context)
+        }
+
+    }
+
+    private fun setGrainView(statTextObj: StatTextObj, holder: StatisticViewHolder, context: Context){
+        val grain = TextView(holder.itemView.context)
+        grain.tag = TAG_DICE_VIEW
+        grain.textSize =
+            context.resources.getDimension(R.dimen.text_size_in_generated_view_big) / TEXT_SIZE_CORRECTION_DIVIDER
+        grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
+
+        grain.text =
+            context.getString(R.string.statistic_grain_text, statTextObj.numOfDicesOfGrain, statTextObj.grain)
+        holder.binding.layoutForDices.addView(grain)
+
+    }
+
+    private fun setColorView(statTextObj: StatTextObj, holder: StatisticViewHolder, context: Context){
+            statTextObj.colorsAndResults.forEach { a ->
+            val colorRow = TextView(holder.itemView.context)
+            colorRow.tag = TAG_DICE_VIEW
+            colorRow.setPadding(context.resources.getDimension(R.dimen.text_margin).toInt(), 0,0,0)
+            colorRow.textSize =
+                context.resources.getDimension(R.dimen.text_size_in_generated_view) / TEXT_SIZE_CORRECTION_DIVIDER
+            colorRow.setTextColor(ContextCompat.getColor(holder.itemView.context, a.key))
+            colorRow.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
+            colorRow.text = a.value
+            holder.binding.layoutForDices.addView(colorRow)
+        }
+    }
+
+    private fun deletePreviousViews (holder: StatisticViewHolder){
         holder.binding.layoutForDices.allViews
             .filter { it.tag == TAG_DICE_VIEW }
             .toList()
             .forEach {
                 holder.binding.layoutForDices.removeView(it)
             }
-
-        statistic.forEach {
-
-            val grain = TextView(holder.itemView.context)
-            grain.tag = TAG_DICE_VIEW
-            grain.textSize =
-                context.resources.getDimension(R.dimen.text_size_in_generated_view_big) / TEXT_SIZE_CORRECTION_DIVIDER
-            grain.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
-
-            grain.text =
-                context.getString(R.string.statistic_grain_text, it.numOfDicesOfGrain, it.grain)
-            holder.binding.layoutForDices.addView(grain)
-
-            val colorsRow = it.colorsAndResults
-            colorsRow.forEach { a ->
-                val colorRow = TextView(holder.itemView.context)
-                colorRow.tag = TAG_DICE_VIEW
-                colorRow.setPadding(context.resources.getDimension(R.dimen.text_margin).toInt(), 0,0,0)
-                colorRow.textSize =
-                    context.resources.getDimension(R.dimen.text_size_in_generated_view) / TEXT_SIZE_CORRECTION_DIVIDER
-                colorRow.setTextColor(ContextCompat.getColor(holder.itemView.context, a.key))
-                colorRow.textAlignment = View.TEXT_ALIGNMENT_TEXT_START
-                colorRow.text = a.value
-                holder.binding.layoutForDices.addView(colorRow)
-            }
-        }
-
     }
-
 
     override fun getItemCount(): Int = list.size
 

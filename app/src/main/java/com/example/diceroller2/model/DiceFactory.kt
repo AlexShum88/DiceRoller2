@@ -1,12 +1,16 @@
 package com.example.diceroller2.model
 
 import com.example.diceroller2.R
+import com.example.diceroller2.model.Dice.Companion.DEFAULT_DICE_COLOR
+import com.example.diceroller2.model.Dice.Companion.DEFAULT_DICE_GRAIN
+import com.example.diceroller2.model.Dice.Companion.DEFAULT_DICE_IMAGE
+import com.example.diceroller2.model.Dice.Companion.DEFAULT_DICE_PACK
 
 object DiceFactory {
-    const val DEFAULT_DICE_PACK = "start"
-    const val DEFAULT_DICE_IMAGE = "start/6/1.png"
-    const val DEFAULT_DICE_COLOR = R.color.white
-    const val DEFAULT_DICE_GRAIN = 6
+//    const val DEFAULT_DICE_PACK = "start"
+//    const val DEFAULT_DICE_IMAGE = "start/6/1.png"
+//    const val DEFAULT_DICE_COLOR = R.color.white
+//    const val DEFAULT_DICE_GRAIN = 6
 
 
     fun createDice(

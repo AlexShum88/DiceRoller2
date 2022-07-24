@@ -4,11 +4,13 @@ import android.graphics.drawable.VectorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.view.allViews
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diceroller2.databinding.PackLineBinding
-import com.example.diceroller2.model.DiceActions
+import com.example.diceroller2.model.Dice.Companion.IMAGE_RES
 import com.example.diceroller2.model.DiceGrains
 
 
@@ -33,20 +35,8 @@ class PackAdapter(
         val pack = packs[position]
         holder.binding.packElementName.text = pack
         holder.binding.root.tag = pack
-        holder.binding.packElementLayout.allViews
-            .filter { it.tag == TAG_DICE_IMAGE }
-            .toList()
-            .forEach {
-                holder.binding.packElementLayout.removeView(it)
-            }
-
-        val imageAssets = DiceGrains.GRAINS.map {
-            val diceImage = ImageView(holder.itemView.context)
-            createImageView(diceImage, "$pack/$it/$it${DiceActions.IMAGE_RES}")
-            holder.binding.packElementLayout.addView(diceImage)
-            diceImage.id
-        }
-        holder.binding.packFlow.referencedIds = imageAssets.toIntArray()
+        deletePreviousItemViews(holder)
+        holder.binding.packFlow.referencedIds = createImageAssets(holder, pack)
     }
 
     private fun createImageView(diceImage: ImageView, patchToPicture:String){
@@ -57,6 +47,25 @@ class PackAdapter(
             diceImage.setImageDrawable(drawable)
             id = View.generateViewId()
         }
+    }
+
+    private fun createImageAssets(holder: PackViewHolder, pack: String): IntArray =
+
+        DiceGrains.GRAINS.map {
+            val diceImage = ImageView(holder.itemView.context)
+            createImageView(diceImage, "$pack/$it/$it${IMAGE_RES}")
+            holder.binding.packElementLayout.addView(diceImage)
+            diceImage.id
+        }.toIntArray()
+
+
+    private fun deletePreviousItemViews(holder: PackViewHolder){
+        holder.binding.packElementLayout.allViews
+            .filter { it.tag == TAG_DICE_IMAGE }
+            .toList()
+            .forEach {
+                holder.binding.packElementLayout.removeView(it)
+            }
     }
 
     override fun getItemCount(): Int = packs.size

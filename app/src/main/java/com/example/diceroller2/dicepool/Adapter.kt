@@ -40,31 +40,31 @@ class DiceAdapter(
         val dice = dices[position]
         with(holder.binding) {
             root.tag = dice
-
-//            diceImage.setImageResource(dice.image)
-            val asd = fragment.requireContext().assets.open(dice.image)
-            val d = VectorDrawable.createFromStream(asd, null)
-
-            diceImage.setImageDrawable(d)
+            val drawableStream = fragment.requireContext().assets.open(dice.image)
+            val drawable = VectorDrawable.createFromStream(drawableStream, null)
+            diceImage.setImageDrawable(drawable)
             diceImage.setBackgroundColor(fragment.requireContext().getColor(dice.color))
-            if(RollRegime.rollAllPrevDIcesRegime){
-                if (divider >= 0) {
-                    if (position <= divider) {
-                        root.alpha = MAX_ALPHA
-                    } else {
-                        root.alpha = MIN_ALPHA
-                    }
+            setDiceAlpha(position, root)
+//            DrawableCompat.setTint(diceImage.drawable, ContextCompat.getColor(fragment.requireContext(), dice.color))
+       }
+    }
+
+    private fun setDiceAlpha(position: Int, root: View){
+        if(RollRegime.rollAllPrevDIcesRegime){
+            if (divider >= 0) {
+                if (position <= divider) {
+                    root.alpha = MAX_ALPHA
+                } else {
+                    root.alpha = MIN_ALPHA
                 }
             }
-            else {
-                if (position==divider || divider<0) root.alpha = MAX_ALPHA
-                else root.alpha = MIN_ALPHA
-            }
-
-//            DrawableCompat.setTint(diceImage.drawable, ContextCompat.getColor(fragment.requireContext(), dice.color))
-
+        }
+        else {
+            if (position==divider || divider<0 || divider == dices.size) root.alpha = MAX_ALPHA
+            else root.alpha = MIN_ALPHA
         }
     }
+
 
     override fun getItemCount(): Int = dices.size
 

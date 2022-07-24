@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.diceroller2.model.*
+import com.example.diceroller2.model.Dice.Companion.DEFAULT_DICE_COLOR
 
 class DicePoolViewModel(
     private val switchColor: SwitchColor
@@ -60,7 +61,7 @@ class DicePoolViewModel(
     fun changeColor(dice: Dice) {
         DiceActions.changeDiceColor(
             dice,
-            colorSwitcher.value?.color ?: DiceFactory.DEFAULT_DICE_COLOR,
+            colorSwitcher.value?.color ?: DEFAULT_DICE_COLOR,
         )
     }
 

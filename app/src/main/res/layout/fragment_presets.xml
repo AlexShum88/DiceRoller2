@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-
+        android:src="@drawable/add_dice"
         app:layout_constraintBottom_toBottomOf="@+id/presetRecycle"
         app:layout_constraintEnd_toEndOf="@+id/presetRecycle" />
 

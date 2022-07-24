@@ -18,6 +18,7 @@ import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import com.example.diceroller2.factory
 import com.example.diceroller2.model.Dice
 import com.example.diceroller2.model.RollRegime
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DicePoolFragment(

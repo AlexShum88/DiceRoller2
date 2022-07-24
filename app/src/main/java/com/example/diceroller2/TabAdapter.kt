@@ -31,7 +31,7 @@ class TabAdapter(fragment: FragmentActivity, private val pager: ViewPager2) : Fr
         const val POSITION_OF_PACK = 0
         const val POSITION_OF_PRESETS = 1
         const val POSITION_OF_DICE_POOL = 2
-        const val POSITION_OF_CHOOSE_COLOR = 3
-        const val POSITION_OF_STATISTIC = 4
+        const val POSITION_OF_CHOOSE_COLOR = 4
+        const val POSITION_OF_STATISTIC = 3
     }
 }

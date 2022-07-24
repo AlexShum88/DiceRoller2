@@ -1,9 +1,15 @@
 package com.example.diceroller2.model
 
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.callbackFlow
+
 typealias DColorsListener = (colors: List<DColor>) -> Unit
 
 object ColorsRepository {
-//    var colorSwitcher = true
+    //    var colorSwitcher = true
     private val colors = ColorList.colors
 
     private val listeners = mutableSetOf<DColorsListener>()
@@ -20,14 +26,25 @@ object ColorsRepository {
 
     fun getColors(): List<DColor> = colors
 
-    fun addListener(listener: DColorsListener) {
+    //    fun addListener(listener: DColorsListener) {
+//        listeners.add(listener)
+//        listener.invoke(colors)
+//    }
+//
+//    fun removeListener(listener: DColorsListener) {
+//        listeners.remove(listener)
+//    }
+    fun listenCurrentColor(): Flow<List<DColor>> = callbackFlow {
+        val listener: DColorsListener = {
+            trySend(it)
+        }
         listeners.add(listener)
-        listener.invoke(colors)
-    }
 
-    fun removeListener(listener: DColorsListener) {
-        listeners.remove(listener)
-    }
+        awaitClose {
+            listeners.remove(listener)
+        }
+    }.buffer(Channel.CONFLATED)
+
 
     private fun notifyListeners() {
         listeners.forEach {
