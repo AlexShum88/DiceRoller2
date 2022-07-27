@@ -4,7 +4,9 @@ import android.graphics.drawable.VectorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
+import com.example.diceroller2.R
 import com.example.diceroller2.databinding.DiceBinding
 import com.example.diceroller2.model.Dice
 import com.example.diceroller2.model.RollRegime
@@ -22,10 +24,9 @@ class DiceAdapter(
         set(value) {
             field = value
             notifyDataSetChanged()
-
         }
 
-    var divider: Int = -1
+    private var divider: Int = -1
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,8 +46,25 @@ class DiceAdapter(
             diceImage.setImageDrawable(drawable)
             diceImage.setBackgroundColor(fragment.requireContext().getColor(dice.color))
             setDiceAlpha(position, root)
+            rollAnim(position, root)
+            if (position==dices.size-1)divider =-1
 //            DrawableCompat.setTint(diceImage.drawable, ContextCompat.getColor(fragment.requireContext(), dice.color))
        }
+    }
+
+    private fun rollAnim(position: Int, root: View){
+        if(RollRegime.rollAllPrevDIcesRegime){
+            if (divider >= 0 && divider<dices.size) {
+                if (position <= divider) {
+                    root.startAnimation(AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.dice_anim))
+                }
+            }
+        }
+        else {
+            if (position==divider)
+                root.startAnimation(AnimationUtils.loadAnimation(fragment.requireContext(), R.anim.dice_anim))
+        }
+
     }
 
     private fun setDiceAlpha(position: Int, root: View){

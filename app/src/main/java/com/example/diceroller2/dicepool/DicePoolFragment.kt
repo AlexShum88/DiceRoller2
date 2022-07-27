@@ -11,19 +11,15 @@ import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.diceroller2.MainActivity
 import com.example.diceroller2.R
 import com.example.diceroller2.databinding.FragmentDicePoolBinding
 import com.example.diceroller2.factory
 import com.example.diceroller2.model.Dice
 import com.example.diceroller2.model.RollRegime
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class DicePoolFragment(
-
-) : Fragment() {
+class DicePoolFragment: Fragment() {
 
     lateinit var binding: FragmentDicePoolBinding
     private val viewModel: DicePoolViewModel by viewModels { factory() }
