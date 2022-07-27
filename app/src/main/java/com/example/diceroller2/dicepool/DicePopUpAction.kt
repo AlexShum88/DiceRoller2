@@ -6,5 +6,6 @@ interface DicePopUpAction {
     fun removeDice(dice: Dice)
     fun changeGrain(dice: Dice, grain: Int)
     fun changeAllGrain(grain: Int)
+    fun changeColorOfAllDices()
     //else
 }

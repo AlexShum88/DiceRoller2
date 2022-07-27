@@ -81,6 +81,10 @@ class DicePoolFragment: Fragment() {
                     viewModel.changeGrainForAllDices(grain)
                 }
 
+                override fun changeColorOfAllDices() {
+                    viewModel.changeColorOfAllDices()
+                }
+
 
             }
         )

@@ -35,10 +35,11 @@
         \n\nLeft button activate/deactivate change color of dice to selected color.
         \n\nRight button add a new dice.
         \n\nCentral button switches the throw mode: one dice or all previous dices.
-        \n\nLong click on dice to remove or change dice grain.
+        \n\nLong click on dice to remove or change dice/s grain or color of all dices.
     </string>
     <string name="color_help">Here you can choose color to paint the dice.</string>
     <string name="statistic_help">You roll history.</string>
     <string name="total_score">Total score</string>
+    <string name="change_color_of_all_dice">Change color of all dices</string>
 
 </resources>

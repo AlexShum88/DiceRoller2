@@ -64,6 +64,9 @@ class DicePoolViewModel(
             colorSwitcher.value?.color ?: DEFAULT_DICE_COLOR,
         )
     }
+    fun changeColorOfAllDices(){
+        _dicesLD.value?.forEach { changeColor(it) } ?: return
+    }
 
     fun startChangeColorRegime() {
         switchColor.switch = true

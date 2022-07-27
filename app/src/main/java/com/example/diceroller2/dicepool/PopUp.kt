@@ -25,7 +25,9 @@ class PopUp(
 
         popUp.menu.add(0, 2, Menu.NONE, R.string.change_all_grains)
 
-        popUp.menu.add(0, 3, Menu.NONE, R.string.remove_dice)
+        popUp.menu.add(0, 3, Menu.NONE, R.string.change_color_of_all_dice)
+
+        popUp.menu.add(0, 4, Menu.NONE, R.string.remove_dice)
 
         popUp.setOnMenuItemClickListener {
 
@@ -35,6 +37,9 @@ class PopUp(
                 }
                 CHANGE_ALL_GRAINS -> {
                     createGrainMenu(it.itemId)
+                }
+                CHANGE_COLOR_OF_ALL_DICE -> {
+                    actions.changeColorOfAllDices()
                 }
                 REMOVE_DICE -> {
                     actions.removeDice(dice)
@@ -75,7 +80,7 @@ class PopUp(
     companion object {
         const val CHANGE_GRAIN = 1
         const val CHANGE_ALL_GRAINS = 2
-        const val REMOVE_DICE = 3
-
+        const val CHANGE_COLOR_OF_ALL_DICE = 3
+        const val REMOVE_DICE = 4
     }
 }
