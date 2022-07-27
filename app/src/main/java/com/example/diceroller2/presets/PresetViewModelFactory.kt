@@ -4,8 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.diceroller2.App
-import com.example.diceroller2.ModelFactory
-import com.example.diceroller2.model.databaseRepository.RoomPresetRepository
 
 class PresetViewModelFactory (
     private val app: App

@@ -8,6 +8,7 @@ import com.example.diceroller2.model.database.PresetDao
 import com.example.diceroller2.model.database.entities.DiceEntity
 import com.example.diceroller2.model.database.entities.PresetEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.map
 
 class RoomPresetRepository(

@@ -51,14 +51,11 @@ class PresetsFragment() : Fragment() {
                 viewModel::deletePreset
             )
         }
-        var names: List<String> = emptyList()
         viewModel.presetsList.observe(viewLifecycleOwner) {
             adapter.listOfPresets = it
         }
-        viewModel.presetNames.observe(viewLifecycleOwner) {
-            names = it
-        }
-        addPresetButton(names)
+
+        addPresetButton()
         binding.presetRecycle.adapter = adapter
         binding.presetRecycle.layoutManager = LinearLayoutManager(requireContext())
 
@@ -66,10 +63,15 @@ class PresetsFragment() : Fragment() {
         return binding.root
     }
 
-    private fun setPresetDialog(context: Context, listOfExistPresets: List<String>) {
+    private fun setPresetDialog(context: Context) {
+        var listOfExistPresets: List<String> = emptyList()
+        viewModel.presetNames.observe(viewLifecycleOwner) {
+            listOfExistPresets = it
+        }
         val inflater = LayoutInflater.from(context)
         val view = DialogPresetChangeNameBinding.inflate(inflater)
         view.dialogEditText.setHint(R.string.set_hint_preset_name)
+        println(listOfExistPresets.forEach { println(it) })
         val dialog = AlertDialog.Builder(context)
             .setCancelable(false)
             .setMessage(context.getString(R.string.change_preset_name))
@@ -81,11 +83,11 @@ class PresetsFragment() : Fragment() {
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
                 val name = view.dialogEditText.text.toString().trim()
                 if (name.isEmpty()) {
-                    view.dialogEditText.error = context.getString(R.string.such_name_exist)
+                    view.dialogEditText.error = context.getString(R.string.enter_preset_name)
                     return@setOnClickListener
                 }
 
-                println(listOfExistPresets.forEach { println(it) })
+
 
                 if (!listOfExistPresets.contains(name)) {
                     viewModel.insertPreset(name, DiceRepository.getDices())
@@ -108,9 +110,9 @@ class PresetsFragment() : Fragment() {
                 ?: MainActivity.DEFAULT_DICE_PACK
     }
 
-    private fun addPresetButton(names: List<String>){
+    private fun addPresetButton(){
         binding.addPresetButton.setOnClickListener {
-            setPresetDialog(requireContext(), names)
+            setPresetDialog(requireContext())
         }
     }
 
