@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         // providing title for the ActionBar
         viewModel.totalScoreLD.observe(this){
-            actionBar!!.title = "Total score ${it}"
+            actionBar!!.title = "${getString(R.string.total_score)} ${it}"
         }
 
 
